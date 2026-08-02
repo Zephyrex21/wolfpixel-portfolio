@@ -1,6 +1,6 @@
-import React from "react";
-import { motion, Variants } from "framer-motion";
-import { Terminal, Github } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useInView, Variants } from "framer-motion";
+import { Terminal, Github, Copy, Check } from "lucide-react";
 import { toolItem } from "../../utils/constants";
 
 /* ===================== Data ===================== */
@@ -48,6 +48,147 @@ const stagger: Variants = {
   show: {
     transition: { staggerChildren: 0.12, delayChildren: 0.15 },
   },
+};
+
+/* ===================== Tool Row ===================== */
+
+const TILT_MAX_DEG = 5;
+
+const ToolRow: React.FC<{ tool: toolItem }> = ({ tool }) => {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(rowRef, { once: true, amount: 0.6 });
+
+  const [typed, setTyped] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  // One-time typewriter effect when the row scrolls into view.
+  useEffect(() => {
+    if (!isInView) return;
+    let i = 0;
+    const text = tool.name;
+    const id = setInterval(() => {
+      i += 1;
+      setTyped(text.slice(0, i));
+      if (i >= text.length) clearInterval(id);
+    }, 32);
+    return () => clearInterval(id);
+  }, [isInView, tool.name]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = rowRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateY = (x / rect.width - 0.5) * TILT_MAX_DEG * 2;
+    const rotateX = (y / rect.height - 0.5) * -TILT_MAX_DEG * 2;
+
+    el.style.setProperty("--x", `${x}px`);
+    el.style.setProperty("--y", `${y}px`);
+    el.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.015)`;
+  };
+
+  const handleMouseLeave = () => {
+    const el = rowRef.current;
+    if (!el) return;
+    el.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)";
+  };
+
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(`git clone ${tool.link}.git`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // Clipboard API unavailable in this context — fail silently.
+    }
+  };
+
+  const isTyping = typed.length < tool.name.length;
+
+  return (
+    <motion.div
+      ref={rowRef}
+      variants={fadeUp}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="
+        tool-row-tilt
+        group
+        relative
+        overflow-hidden
+        rounded-xl
+        border border-background/10
+        px-5 py-5
+        flex flex-col md:flex-row
+        md:items-start md:justify-between
+        lg:flex-col xl:flex-row
+        gap-5
+      "
+    >
+      {/* Cursor-tracked spotlight */}
+      <div
+        className="tool-spotlight pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        aria-hidden="true"
+      />
+
+      <div className="relative">
+        <div className="flex items-center gap-3">
+          <Terminal size={14} className="shrink-0" />
+          <span className="font-mono text-sm break-all">
+            {typed}
+            {isTyping && <span className="typewriter-cursor h-4 align-middle" />}
+          </span>
+
+          <button
+            onClick={handleCopy}
+            aria-label={`Copy git clone command for ${tool.name}`}
+            className="
+              shrink-0 p-1 rounded-md
+              text-background/50 hover:text-background
+              hover:bg-background/10
+              transition-colors duration-200
+              cursor-pointer
+            "
+          >
+            {copied ? <Check size={13} /> : <Copy size={13} />}
+          </button>
+        </div>
+
+        <p className="mt-2 text-sm leading-relaxed text-background/90 max-w-md">
+          {tool.description}
+        </p>
+      </div>
+
+      {/* CTA */}
+      <a
+        href={tool.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="
+          relative
+          inline-flex items-center gap-2
+          rounded-full
+          border border-background/25
+          bg-background/10
+          px-4 py-2
+          text-[11px] font-medium tracking-wide
+          text-background
+          transition-all duration-300
+          hover:bg-background/20
+          hover:scale-[1.03]
+          self-start shrink-0
+        "
+        aria-label={`View ${tool.name} on GitHub`}
+      >
+        View Repo
+        <Github size={14} />
+      </a>
+    </motion.div>
+  );
 };
 
 /* ===================== Component ===================== */
@@ -104,55 +245,9 @@ const DeveloperTools: React.FC = () => {
               </motion.div>
 
               {/* Right */}
-              <motion.div variants={stagger} className="space-y-7">
+              <motion.div variants={stagger} className="space-y-4">
                 {tools.map((tool) => (
-                  <motion.div
-                    key={tool.name}
-                    variants={fadeUp}
-                    className="
-                      flex flex-col md:flex-row
-                      md:items-start md:justify-between
-                      lg:flex-col xl:flex-row
-                      gap-5
-                    "
-                  >
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <Terminal size={14} />
-                        <span className="font-mono text-sm break-all">
-                          {tool.name}
-                        </span>
-                      </div>
-
-                      <p className="mt-2 text-sm leading-relaxed text-background/90">
-                        {tool.description}
-                      </p>
-                    </div>
-
-                    {/* CTA */}
-                    <a
-                      href={tool.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="
-                        inline-flex items-center gap-2
-                        rounded-full
-                        border border-background/25
-                        bg-background/10
-                        px-4 py-2
-                        text-[11px] font-medium tracking-wide
-                        text-background
-                        transition-all duration-300
-                        hover:bg-background/20
-                        hover:scale-[1.03]
-                        self-start shrink-0
-                      "
-                      aria-label={`View ${tool.name} on GitHub`}
-                    >
-                      View Repo
-                      <Github size={14} />
-                    </a>
-                  </motion.div>
+                  <ToolRow key={tool.name} tool={tool} />
                 ))}
               </motion.div>
             </div>

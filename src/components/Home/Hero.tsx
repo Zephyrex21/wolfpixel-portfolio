@@ -188,7 +188,7 @@ const Hero: React.FC = () => {
               z-0
             "
           >
-            <div className="relative h-full flex items-end justify-center">
+            <div className="relative h-full flex items-end justify-center overflow-hidden">
               {/* Ambient glow — reads as a soft dark blob in light mode,
                   a soft light blob in dark mode; grounds the cutout so it
                   doesn't float as a flat sticker on the page background. */}
@@ -202,6 +202,7 @@ const Hero: React.FC = () => {
                   rounded-full
                   bg-foreground/[0.07]
                   blur-3xl
+                  z-0
                 "
               />
 
@@ -211,6 +212,7 @@ const Hero: React.FC = () => {
                 loading="lazy"
                 className="
                   relative
+                  z-10
                   h-[88%]
                   w-auto
                   object-contain

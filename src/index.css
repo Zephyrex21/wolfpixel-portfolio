@@ -67,3 +67,45 @@ body {
   background: var(--t-scroll-thumb);
   border-radius: 999px;
 }
+
+/* ===================== TOOLKIT ROW INTERACTIONS ===================== */
+.tool-row-tilt {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.tool-spotlight {
+  background: radial-gradient(
+    480px circle at var(--x, 50%) var(--y, 50%),
+    color-mix(in srgb, var(--color-background) 14%, transparent),
+    transparent 65%
+  );
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  margin-left: 2px;
+  background: currentColor;
+  animation: blinkCursor 0.9s step-end infinite;
+}
+
+@keyframes blinkCursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-row-tilt {
+    transition: none;
+  }
+  .typewriter-cursor {
+    animation: none;
+  }
+}
