@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2 } from "lucide-react";
-import YourImg from "../../assets/photo.png";
+import YourImg from "/assets/photo-cutout.png";
 import CVPDF from "/assets/resume.pdf";
 import { SocialLink } from "../../utils/constants";
 import {
@@ -188,21 +188,43 @@ const Hero: React.FC = () => {
               z-0
             "
           >
-            <div className="h-full flex items-center">
+            <div className="relative h-full flex items-end justify-center">
+              {/* Ambient glow — reads as a soft dark blob in light mode,
+                  a soft light blob in dark mode; grounds the cutout so it
+                  doesn't float as a flat sticker on the page background. */}
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  left-1/2 bottom-[6%]
+                  -translate-x-1/2
+                  w-[85%] h-[70%]
+                  rounded-full
+                  bg-foreground/[0.07]
+                  blur-3xl
+                "
+              />
+
               <img
                 src={YourImg}
                 alt="Saurabh Raj Shekhar"
                 loading="lazy"
                 className="
-                  h-[90%]
+                  relative
+                  h-[88%]
                   w-auto
                   object-contain
-                  grayscale
-                  transition-all
+                  drop-shadow-[0_25px_45px_rgba(0,0,0,0.25)]
+                  transition-transform
                   duration-700
-                  hover:grayscale-0
                   hover:scale-[1.02]
                 "
+                style={{
+                  maskImage:
+                    "linear-gradient(to bottom, black 90%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 90%, transparent 100%)",
+                }}
               />
             </div>
           </motion.div>
