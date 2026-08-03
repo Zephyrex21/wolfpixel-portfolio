@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronDown, Github } from "lucide-react";
 import { projectItem, Theme } from "../../utils/constants";
@@ -93,8 +93,74 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
 
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
+  // ===== Floating cursor-follow preview (desktop only) =====
+  // Shows a peek of the project image/gradient near the cursor while
+  // hovering a row, before the person even clicks to expand it.
+  const floatingRef = useRef<HTMLDivElement>(null);
+  const hoveredRef = useRef<number | null>(null);
+  const expandedRef = useRef<number | null>(null);
+  const targetPos = useRef({ x: 0, y: 0 });
+  const currentPos = useRef({ x: 0, y: 0 });
+  const rafId = useRef<number | null>(null);
+
+  useEffect(() => {
+    expandedRef.current = expanded;
+  }, [expanded]);
+
+  const followLoop = () => {
+    currentPos.current.x += (targetPos.current.x - currentPos.current.x) * 0.16;
+    currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.16;
+
+    const shouldShow =
+      hoveredRef.current !== null && hoveredRef.current !== expandedRef.current;
+
+    if (floatingRef.current) {
+      floatingRef.current.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) scale(${shouldShow ? 1 : 0.92})`;
+      floatingRef.current.style.opacity = shouldShow ? "1" : "0";
+    }
+
+    rafId.current = requestAnimationFrame(followLoop);
+  };
+
+  const handleListMouseMove = (e: React.MouseEvent) => {
+    targetPos.current = { x: e.clientX + 26, y: e.clientY - 100 };
+    if (!rafId.current) {
+      currentPos.current = { ...targetPos.current };
+      rafId.current = requestAnimationFrame(followLoop);
+    }
+  };
+
+  const handleListMouseLeave = () => {
+    hoveredRef.current = null;
+    setHovered(null);
+    setTimeout(() => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+        rafId.current = null;
+      }
+    }, 400);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
   return (
     <section id="projects" className="scroll-mt-14 py-8 lg:py-16">
+      {/* Cursor-follow floating preview */}
+      <div
+        ref={floatingRef}
+        className="fixed top-0 left-0 z-50 pointer-events-none hidden lg:block w-56 xl:w-64 opacity-0"
+      >
+        <div className="aspect-video rounded-xl overflow-hidden border border-border shadow-2xl bg-background">
+          {hovered !== null && (
+            <ProjectPreview project={projects[hovered]} theme={theme} />
+          )}
+        </div>
+      </div>
+
       <motion.div
         variants={staggerContainer}
         initial="hidden"
@@ -120,6 +186,8 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
         <motion.div
           className="divide-y divide-border border-b border-border"
           variants={{ hidden: {}, show: {} }}
+          onMouseMove={(e) => isDesktop && handleListMouseMove(e)}
+          onMouseLeave={() => isDesktop && handleListMouseLeave()}
         >
           {projects.map((project, idx) => {
             const isHovered = hovered === idx;
@@ -130,8 +198,11 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
                 key={project.title}
                 variants={fadeUp}
                 className="relative"
-                onMouseEnter={() => isDesktop && setHovered(idx)}
-                onMouseLeave={() => isDesktop && setHovered(null)}
+                onMouseEnter={() => {
+                  if (!isDesktop) return;
+                  setHovered(idx);
+                  hoveredRef.current = idx;
+                }}
               >
                 {/* Hover Background */}
                 <motion.div

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Plus } from "lucide-react";
 import {
   staggerContainer,
@@ -61,6 +61,13 @@ const certifications = [
 
 const About = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const journeyRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: journeyRef,
+    offset: ["start 0.8", "end 0.65"],
+  });
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   const isDesktop = () => window.innerWidth >= 1024;
 
@@ -126,8 +133,17 @@ const About = () => {
             Journey
           </motion.p>
 
-          <div className="space-y-10 md:space-y-14 lg:space-y-20">
-            {journeyItems.map((item, idx) => {
+          <div ref={journeyRef} className="relative">
+            {/* Track — always visible, faint */}
+            <div className="hidden lg:block absolute left-[9.25rem] top-2 bottom-2 w-px bg-border" />
+            {/* Fill — draws in as the section scrolls through view */}
+            <motion.div
+              className="hidden lg:block absolute left-[9.25rem] top-2 w-px bg-foreground"
+              style={{ height: lineHeight }}
+            />
+
+            <div className="space-y-10 md:space-y-14 lg:space-y-20">
+              {journeyItems.map((item, idx) => {
               const isActive = activeIndex === idx;
 
               return (
@@ -231,6 +247,7 @@ const About = () => {
                 </motion.div>
               );
             })}
+            </div>
           </div>
         </motion.div>
       </motion.div>

@@ -5,6 +5,7 @@ import YourImg from "/assets/photo-cutout.png";
 import CVPDF from "/assets/resume.pdf";
 import { SocialLink } from "../../utils/constants";
 import { scrollToTarget } from "../../utils/smoothScroll";
+import CountUp from "../CountUp";
 import {
   staggerContainerSlow,
   fadeUp,
@@ -98,7 +99,7 @@ const Hero: React.FC = () => {
             >
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  24+
+                  <CountUp target={24} suffix="+" />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   Projects Shipped
@@ -107,7 +108,7 @@ const Hero: React.FC = () => {
 
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  34+
+                  <CountUp target={34} suffix="+" duration={1.8} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   GitHub Repos
@@ -116,7 +117,7 @@ const Hero: React.FC = () => {
 
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  150+
+                  <CountUp target={150} suffix="+" duration={2} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   DSA Problems

@@ -9,7 +9,6 @@ import { flushSync } from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import PageLoader from "./components/Loaders/PageLoader";
-import CustomCursor from "./components/CustomCursor";
 import { AnimatePresence } from "framer-motion";
 import { Theme } from "./utils/constants";
 import { initSmoothScroll, destroySmoothScroll, scrollToTarget } from "./utils/smoothScroll";
@@ -135,7 +134,6 @@ function App() {
 
   return (
     <Router>
-      <CustomCursor />
       <AppRoutes theme={theme} onToggleTheme={toggleTheme} />
     </Router>
   );

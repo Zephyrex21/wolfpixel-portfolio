@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, Variants } from "framer-motion";
 import {
   Code,
@@ -74,6 +74,12 @@ const techItemVariants: Variants = {
   },
 };
 
+/* ------------------------- Dock-style proximity magnification ------------------------- */
+// Distance (px) beyond which an icon is unaffected by the cursor, and
+// the peak scale applied when the cursor sits exactly on an icon.
+const INFLUENCE_RADIUS = 140;
+const MAX_SCALE = 1.32;
+
 /* ------------------------------ Skills Component ------------------------------ */
 const Skills: React.FC = () => {
   // Helper: calculate responsive icon size
@@ -87,12 +93,65 @@ const Skills: React.FC = () => {
     return 36;
   };
 
-  const [iconSize, setIconSize] = React.useState(getIconSize());
+  const [iconSize, setIconSize] = useState(getIconSize());
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => setIconSize(getIconSize());
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const gridRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const rafId = useRef<number | null>(null);
+  const mousePos = useRef({ x: -9999, y: -9999 });
+
+  const runDockLoop = () => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const gridRect = grid.getBoundingClientRect();
+
+    itemRefs.current.forEach((el) => {
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left - gridRect.left + rect.width / 2;
+      const centerY = rect.top - gridRect.top + rect.height / 2;
+      const dist = Math.hypot(
+        mousePos.current.x - centerX,
+        mousePos.current.y - centerY,
+      );
+      const proximity = Math.max(0, 1 - dist / INFLUENCE_RADIUS);
+      const scale = 1 + proximity * (MAX_SCALE - 1);
+      el.style.transform = `scale(${scale})`;
+    });
+
+    rafId.current = requestAnimationFrame(runDockLoop);
+  };
+
+  const handleMouseEnter = () => {
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(runDockLoop);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = gridRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mousePos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  };
+
+  const handleMouseLeave = () => {
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = null;
+    mousePos.current = { x: -9999, y: -9999 };
+    itemRefs.current.forEach((el) => {
+      if (el) el.style.transform = "scale(1)";
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+    };
   }, []);
 
   return (
@@ -126,6 +185,10 @@ const Skills: React.FC = () => {
 
         {/* Tech Grid */}
         <motion.div
+          ref={gridRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
           className="mt-15 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-10 gap-x-16"
           variants={techContainerVariants}
           initial="hidden"
@@ -135,21 +198,33 @@ const Skills: React.FC = () => {
           {techStack.map((tech, idx) => (
             <motion.div
               key={tech.name}
-              className={`group flex items-center gap-2 md:gap-4 cursor-default ${
+              className={`cursor-default ${
                 idx % 2 === 0 ? "translate-y-0" : "translate-y-2 md:translate-y-0"
               }`}
               variants={techItemVariants}
-              whileHover={{ scale: 1.15, rotate: 2 }}
             >
-              <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                {React.cloneElement(tech.icon as React.ReactElement, {
-                  size: iconSize,
-                  strokeWidth: 1.5,
-                })}
-              </span>
-              <span className="text-[clamp(1rem,3vw,1.5rem)] font-medium tracking-tight">
-                {tech.name}
-              </span>
+              {/* Separate node for the proximity scale so it never
+                  fights the entrance animation's own transform. */}
+              <div
+                ref={(el) => {
+                  itemRefs.current[idx] = el;
+                }}
+                className="group flex items-center gap-2 md:gap-4"
+                style={{
+                  transition: "transform 0.15s ease-out",
+                  transformOrigin: "center",
+                }}
+              >
+                <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                  {React.cloneElement(tech.icon as React.ReactElement, {
+                    size: iconSize,
+                    strokeWidth: 1.5,
+                  })}
+                </span>
+                <span className="text-[clamp(1rem,3vw,1.5rem)] font-medium tracking-tight">
+                  {tech.name}
+                </span>
+              </div>
             </motion.div>
           ))}
         </motion.div>
