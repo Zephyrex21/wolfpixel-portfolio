@@ -109,3 +109,71 @@ body {
     animation: none;
   }
 }
+
+/* ===================== CUSTOM CURSOR ===================== */
+.custom-cursor-active,
+.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.custom-cursor-dot,
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 9999px;
+  opacity: 0;
+  will-change: transform;
+}
+
+.custom-cursor-dot {
+  width: 7px;
+  height: 7px;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  transition: opacity 0.25s ease;
+}
+
+.custom-cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid #ffffff;
+  mix-blend-mode: difference;
+  transition:
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-width 0.28s ease,
+    opacity 0.25s ease;
+}
+
+.custom-cursor-ring.cursor-ring-hover {
+  width: 60px;
+  height: 60px;
+  border-width: 0;
+  background: #ffffff;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none;
+  }
+}
+
+/* ===================== THEME TOGGLE VIEW TRANSITION ===================== */
+/* Suppress the browser's default cross-fade so only our custom
+   clip-path circle wipe (driven from App.tsx) is visible. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}

@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail, Code2 } from "lucide-react";
 import YourImg from "/assets/photo-cutout.png";
 import CVPDF from "/assets/resume.pdf";
 import { SocialLink } from "../../utils/constants";
+import { scrollToTarget } from "../../utils/smoothScroll";
 import {
   staggerContainerSlow,
   fadeUp,
@@ -130,11 +131,7 @@ const Hero: React.FC = () => {
               <motion.button
                 whileHover={hoverScale}
                 whileTap={{ scale: 0.98 }}
-                onClick={() =>
-                  document
-                    .querySelector("#contact")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
+                onClick={() => scrollToTarget("#contact")}
                 className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-85 transition cursor-pointer"
               >
                 Let's collaborate

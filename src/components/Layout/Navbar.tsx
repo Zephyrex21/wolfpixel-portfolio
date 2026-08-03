@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail, Moon, Sun, Code2 } from "lucide-react";
 import { SocialLink, Theme } from "../../utils/constants";
 import { motion, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
+import { getLenis } from "../../utils/smoothScroll";
 import StaggeredMenu from "./StaggeredMenu";
 
 /* ===================== ANIMATIONS ===================== */
@@ -28,7 +29,7 @@ const navItemVariants: Variants = {
 
 interface NavbarProps {
   theme: Theme;
-  onToggleTheme: () => void;
+  onToggleTheme: (e?: React.MouseEvent) => void;
 }
 
 /* ===================== COMPONENT ===================== */
@@ -53,6 +54,11 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
+    if (menuOpen) {
+      getLenis()?.stop();
+    } else {
+      getLenis()?.start();
+    }
   }, [menuOpen]);
 
   useEffect(() => {

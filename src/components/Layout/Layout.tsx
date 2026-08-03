@@ -5,7 +5,7 @@ import { Theme } from "../../utils/constants";
 
 interface LayoutProps {
   theme: Theme;
-  onToggleTheme: () => void;
+  onToggleTheme: (e?: React.MouseEvent) => void;
 }
 
 const Layout: React.FC<LayoutProps> = ({ theme, onToggleTheme }) => {
