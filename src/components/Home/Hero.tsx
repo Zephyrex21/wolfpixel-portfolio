@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2 } from "lucide-react";
 import YourImg from "/assets/photo-cutout.png";
@@ -99,7 +99,7 @@ const Hero: React.FC = () => {
             >
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  <CountUp target={24} suffix="+" />
+                  <CountUp target={24} suffix="+" duration={2.2} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   Projects Shipped
@@ -108,7 +108,7 @@ const Hero: React.FC = () => {
 
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  <CountUp target={34} suffix="+" duration={1.8} />
+                  <CountUp target={34} suffix="+" duration={2.6} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   GitHub Repos
@@ -117,7 +117,7 @@ const Hero: React.FC = () => {
 
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  <CountUp target={150} suffix="+" duration={2} />
+                  <CountUp target={150} suffix="+" duration={3.2} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   DSA Problems
@@ -234,4 +234,4 @@ const Hero: React.FC = () => {
   );
 };
 
-export default Hero;
+export default memo(Hero);

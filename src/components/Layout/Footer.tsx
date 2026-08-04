@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2, MapPin } from "lucide-react";
 import { staggerContainer, fadeUp } from "../../utils/animations";
@@ -189,4 +189,4 @@ const Footer: React.FC = () => {
   );
 };
 
-export default Footer;
+export default memo(Footer);

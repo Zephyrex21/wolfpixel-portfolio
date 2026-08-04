@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import { Terminal, Github, Copy, Check } from "lucide-react";
 import { toolItem } from "../../utils/constants";
@@ -258,4 +258,4 @@ const DeveloperTools: React.FC = () => {
   );
 };
 
-export default DeveloperTools;
+export default memo(DeveloperTools);

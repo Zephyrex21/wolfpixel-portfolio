@@ -16,7 +16,7 @@ interface CountUpProps {
 const CountUp: React.FC<CountUpProps> = ({
   target,
   suffix = "",
-  duration = 1.6,
+  duration = 2.6,
 }) => {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.6 });
@@ -31,7 +31,10 @@ const CountUp: React.FC<CountUpProps> = ({
     const step = (ts: number) => {
       if (start === null) start = ts;
       const progress = Math.min((ts - start) / (duration * 1000), 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      // Gentle ease-out (quadratic, not cubic) — keeps the count
+      // visually ticking through the whole duration instead of
+      // front-loading most of the motion in the first few frames.
+      const eased = 1 - Math.pow(1 - progress, 1.8);
       setDisplay(Math.round(eased * target));
       if (progress < 1) raf = requestAnimationFrame(step);
     };

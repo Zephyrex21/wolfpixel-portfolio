@@ -40,15 +40,27 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    const onResize = () => setWindowWidth(window.innerWidth);
+    let ticking = false;
 
-    window.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", onResize);
+    const update = () => {
+      setScrolled(window.scrollY > 20);
+      setWindowWidth(window.innerWidth);
+      ticking = false;
+    };
+
+    const onScrollOrResize = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
     };
   }, []);
 

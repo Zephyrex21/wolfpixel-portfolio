@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github } from "lucide-react";
 import { miniProjectItem } from "../../utils/constants";
@@ -74,4 +74,4 @@ const MoreProjects: React.FC<{ projects: miniProjectItem[] }> = ({
   );
 };
 
-export default MoreProjects;
+export default memo(MoreProjects);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { motion, Variants } from "framer-motion";
 import {
   Code,
@@ -233,4 +233,4 @@ const Skills: React.FC = () => {
   );
 };
 
-export default Skills;
+export default memo(Skills);

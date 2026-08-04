@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Plus } from "lucide-react";
 import {
@@ -255,4 +255,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default memo(About);

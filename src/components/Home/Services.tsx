@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, memo } from "react";
 import { motion } from "framer-motion";
 import { Code, Globe, Server, Brain, Workflow, Package } from "lucide-react";
 import gsap from "gsap";
@@ -41,8 +41,7 @@ const Services: React.FC = () => {
 
   useGSAP(
     () => {
-      // 1. Continuous Marquee
-      // Slower duration for a calmer feel (35s instead of 25s)
+      // Continuous marquee — slow, calm infinite loop in each direction.
       gsap.to(topRowRef.current, {
         xPercent: -50,
         ease: "none",
@@ -50,13 +49,7 @@ const Services: React.FC = () => {
         duration: 35,
       });
 
-      gsap.to(bottomRowRef.current, {
-        xPercent: -50,
-        ease: "none",
-        repeat: -1,
-        duration: 35,
-      });
-      // Start box from -50 back to 0 for right scroll
+      // Bottom row scrolls the opposite way: start shifted, animate back to 0.
       gsap.set(bottomRowRef.current, { xPercent: -50 });
       gsap.to(bottomRowRef.current, {
         xPercent: 0,
@@ -147,4 +140,4 @@ const Services: React.FC = () => {
   );
 };
 
-export default Services;
+export default memo(Services);

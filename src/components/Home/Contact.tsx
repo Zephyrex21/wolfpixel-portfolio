@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Mail, Linkedin, Github, Code2, ArrowUpRight } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
@@ -167,4 +168,4 @@ const Contact: React.FC = () => {
   );
 };
 
-export default Contact;
+export default memo(Contact);
