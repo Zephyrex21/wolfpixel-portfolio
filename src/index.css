@@ -44,6 +44,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ===================== THEME TOGGLE TRANSITION ===================== */
+/* Applied for a brief window right when the theme flips. Lets every
+   element smoothly interpolate its own colors in place — no overlay,
+   no page snapshot, no flash. Scoped to this class (rather than a
+   permanent global rule) so it never fights the faster, purpose-built
+   hover transitions already defined throughout the site the rest of
+   the time. */
+.theme-transitioning,
+.theme-transitioning * {
+  transition:
+    background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
 body {
   @apply bg-background text-foreground;
   font-family: "Jost", system-ui, serif;

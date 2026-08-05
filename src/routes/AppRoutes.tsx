@@ -7,7 +7,7 @@ import { Theme } from "../utils/constants";
 
 interface AppRoutesProps {
   theme: Theme;
-  onToggleTheme: (e?: React.MouseEvent) => void;
+  onToggleTheme: () => void;
 }
 
 const AppRoutes: React.FC<AppRoutesProps> = ({ theme, onToggleTheme }) => {

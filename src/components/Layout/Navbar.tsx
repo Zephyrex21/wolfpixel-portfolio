@@ -29,7 +29,7 @@ const navItemVariants: Variants = {
 
 interface NavbarProps {
   theme: Theme;
-  onToggleTheme: (e?: React.MouseEvent) => void;
+  onToggleTheme: () => void;
 }
 
 /* ===================== COMPONENT ===================== */
