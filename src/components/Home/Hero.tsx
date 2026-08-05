@@ -6,6 +6,7 @@ import CVPDF from "/assets/resume.pdf";
 import { SocialLink } from "../../utils/constants";
 import { scrollToTarget } from "../../utils/smoothScroll";
 import CountUp from "../CountUp";
+import TypewriterRoles from "./TypewriterRoles";
 import {
   staggerContainerSlow,
   fadeUp,
@@ -68,9 +69,9 @@ const Hero: React.FC = () => {
 
             <motion.p
               variants={fadeUp}
-              className="sm:max-w-sm lg:max-w-xl font-jost text-lg ml:text-xl sm:text-lg md:text-xl tracking-widest text-muted-foreground mb-4 md:mb-6 uppercase"
+              className="sm:max-w-sm lg:max-w-xl font-jost text-lg ml:text-xl sm:text-lg md:text-xl tracking-widest text-muted-foreground mb-4 md:mb-6 uppercase min-h-[1.6em] sm:min-h-[1.4em]"
             >
-              Full-Stack Developer · MERN Stack · AI/ML Enthusiast
+              <TypewriterRoles />
             </motion.p>
 
             <motion.p

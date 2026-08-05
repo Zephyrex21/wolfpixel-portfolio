@@ -235,7 +235,7 @@ const About = () => {
                         }}
                         className="overflow-hidden"
                       >
-                        <p className="mt-3 max-w-3xl text-muted-foreground text-base sm:text-lg leading-[1.85] lg:pl-[7.5rem]">
+                        <p className="mt-3 max-w-3xl text-muted-foreground text-base sm:text-lg leading-[1.85] lg:pl-[10.5rem]">
                           {item.details}
                         </p>
                       </motion.div>

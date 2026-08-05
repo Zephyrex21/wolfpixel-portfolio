@@ -119,28 +119,12 @@ const flagshipProjects: projectItem[] = [
 
 const moreProjects: miniProjectItem[] = [
   {
-    title: "Aethera Sanctuary",
-    description:
-      "A digital sanctuary showcasing 30 of the world's rarest flowers, with cursor petal trails and scroll-driven ambient effects.",
-    stack: "MERN · Glassmorphism",
-    link: "https://aethera-sanctuary.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/aethera-sanctuary",
-  },
-  {
     title: "NeighborNet",
     description:
       "Location-based community platform for discovering and sharing local resources in real time.",
     stack: "TypeScript · Firebase · Leaflet",
     link: "https://neighbornet-ten.vercel.app",
     codeLink: "https://github.com/Zephyrex21/neighbornet",
-  },
-  {
-    title: "Roséa Landing",
-    description:
-      "Premium animated product landing page with Canvas-based scroll animations.",
-    stack: "React · GSAP · Canvas",
-    link: "https://rosea-product-landing.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/rosea-product-landing",
   },
   {
     title: "Concourse AI",
@@ -204,22 +188,6 @@ const moreProjects: miniProjectItem[] = [
     stack: "HTML · JavaScript",
     link: "https://github.com/Zephyrex21/csp-playground",
     codeLink: "https://github.com/Zephyrex21/csp-playground",
-  },
-  {
-    title: "Quantum Optimization",
-    description:
-      "Animated explainer on how quantum computing tackles optimization problems.",
-    stack: "HTML · JavaScript",
-    link: "https://quantum-optimization.netlify.app",
-    codeLink: "https://github.com/Zephyrex21/quantum-optimization",
-  },
-  {
-    title: "Git Scope",
-    description:
-      "Search any GitHub user and explore their profile, repos, and stats in real time.",
-    stack: "JavaScript",
-    link: "https://gitscope-zephyr.netlify.app",
-    codeLink: "https://github.com/Zephyrex21/git-scope",
   },
 ];
 
