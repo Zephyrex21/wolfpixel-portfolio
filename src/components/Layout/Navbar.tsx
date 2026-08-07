@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, Moon, Sun, Code2 } from "lucide-react";
+import { Github, Linkedin, Mail, Moon, Sun, Code2, Command } from "lucide-react";
 import { SocialLink, Theme } from "../../utils/constants";
 import { motion, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
@@ -227,8 +227,23 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
                   {icon}
                 </motion.a>
               ))}
-              <motion.div
+              <motion.button
                 custom={links.length + socials.length + 1}
+                variants={navItemVariants}
+                initial="hidden"
+                animate="visible"
+                onClick={() =>
+                  window.dispatchEvent(new CustomEvent("open-command-palette"))
+                }
+                aria-label="Open command palette"
+                whileTap={{ scale: 0.95 }}
+                className="hidden md:flex items-center gap-1.5 rounded-full border border-[var(--color-border)] px-2.5 py-1 text-[11px] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:border-[var(--color-foreground)] transition-colors cursor-pointer"
+              >
+                <Command size={12} />
+                K
+              </motion.button>
+              <motion.div
+                custom={links.length + socials.length + 2}
                 variants={navItemVariants}
                 initial="hidden"
                 animate="visible"

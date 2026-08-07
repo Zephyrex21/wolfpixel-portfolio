@@ -7,6 +7,7 @@ import { SocialLink } from "../../utils/constants";
 import { scrollToTarget } from "../../utils/smoothScroll";
 import CountUp from "../CountUp";
 import TypewriterRoles from "./TypewriterRoles";
+import { useGithubStats } from "../../utils/useGithubStats";
 import {
   staggerContainerSlow,
   fadeUp,
@@ -18,6 +19,7 @@ import {
 /* ===================== COMPONENT ===================== */
 
 const Hero: React.FC = () => {
+  const { repoCount } = useGithubStats();
   const socials: SocialLink[] = [
     { href: "https://github.com/Zephyrex21", icon: <Github />, label: "GitHub" },
     {
@@ -109,7 +111,7 @@ const Hero: React.FC = () => {
 
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  <CountUp target={34} suffix="+" duration={2.6} />
+                  <CountUp target={repoCount} suffix="+" duration={2.6} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   GitHub Repos

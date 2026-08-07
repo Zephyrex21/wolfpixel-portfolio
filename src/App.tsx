@@ -5,6 +5,10 @@ import PageLoader from "./components/Loaders/PageLoader";
 import { AnimatePresence } from "framer-motion";
 import { Theme } from "./utils/constants";
 import { initSmoothScroll, destroySmoothScroll, scrollToTarget } from "./utils/smoothScroll";
+import { printConsoleEasterEgg } from "./utils/consoleEasterEgg";
+import CommandPalette from "./components/CommandPalette";
+import ScrollProgress from "./components/ScrollProgress";
+import BackToTop from "./components/BackToTop";
 
 function getInitialTheme(): Theme {
   if (typeof window === "undefined") return "light";
@@ -20,6 +24,12 @@ function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const themeRef = useRef(theme);
   themeRef.current = theme;
+
+  // Fun touch for anyone who actually opens devtools — a meaningful
+  // chunk of this site's real audience.
+  useEffect(() => {
+    printConsoleEasterEgg();
+  }, []);
 
   // Handle full page load (images/fonts) before revealing the site
   useEffect(() => {
@@ -125,7 +135,10 @@ function App() {
 
   return (
     <Router>
+      <ScrollProgress />
+      <CommandPalette theme={theme} onToggleTheme={toggleTheme} />
       <AppRoutes theme={theme} onToggleTheme={toggleTheme} />
+      <BackToTop />
     </Router>
   );
 }

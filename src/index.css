@@ -73,6 +73,27 @@ body {
   color: var(--t-bg);
 }
 
+/* ===================== FILM GRAIN ===================== */
+/* Very subtle static noise texture over the whole page — fits the
+   monochrome editorial look. Pure CSS, no image asset, no animation,
+   negligible performance cost. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 997;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+[data-theme="dark"] body::after {
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

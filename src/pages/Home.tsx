@@ -1,12 +1,23 @@
+import { lazy, Suspense } from "react";
 import Hero from "../components/Home/Hero";
 import Projects from "../components/Home/Projects";
-import MoreProjects from "../components/Home/MoreProjects";
-import DeveloperTools from "../components/Home/DeveloperTools";
-import Skills from "../components/Home/Skills";
-import About from "../components/Home/About";
-import Services from "../components/Home/Services";
-import Contact from "../components/Home/Contact";
 import { projectItem, miniProjectItem, Theme } from "../utils/constants";
+
+// Below-the-fold sections are code-split — Hero and Projects (the
+// first thing anyone sees) load eagerly; everything the person only
+// reaches by scrolling loads in parallel right after, cutting initial
+// JS parse/execute time without the person ever noticing a loading
+// state in practice.
+const MoreProjects = lazy(() => import("../components/Home/MoreProjects"));
+const DeveloperTools = lazy(() => import("../components/Home/DeveloperTools"));
+const Skills = lazy(() => import("../components/Home/Skills"));
+const About = lazy(() => import("../components/Home/About"));
+const Services = lazy(() => import("../components/Home/Services"));
+const Contact = lazy(() => import("../components/Home/Contact"));
+
+// Minimal-height placeholder — prevents a jarring layout jump while a
+// chunk loads, without needing to hand-tune a skeleton per section.
+const SectionFallback = () => <div className="min-h-[50vh]" />;
 
 /* ===================== FLAGSHIP PROJECTS ===================== */
 /* Verified live at github.com/Zephyrex21 — descriptions, tech, and
@@ -196,12 +207,24 @@ const Home: React.FC<{ theme: Theme }> = ({ theme }) => {
     <>
       <Hero />
       <Projects projects={flagshipProjects} theme={theme} />
-      <MoreProjects projects={moreProjects} />
-      <DeveloperTools />
-      <Skills />
-      <About />
-      <Services />
-      <Contact />
+      <Suspense fallback={<SectionFallback />}>
+        <MoreProjects projects={moreProjects} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <DeveloperTools />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Skills />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <About />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Services />
+      </Suspense>
+      <Suspense fallback={<SectionFallback />}>
+        <Contact />
+      </Suspense>
     </>
   );
 };

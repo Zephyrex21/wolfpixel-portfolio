@@ -3,12 +3,16 @@ import { Mail, Linkedin, Github, Code2, ArrowUpRight } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
 import { staggerContainer, fadeUp, hoverScale } from "../../utils/animations";
+import { useGithubStats } from "../../utils/useGithubStats";
+import ContactForm from "./ContactForm";
 
 /* =======================
    COMPONENT
    ======================= */
 
 const Contact: React.FC = () => {
+  const { repoCount } = useGithubStats();
+
   const socialLinks = [
     {
       platform: "Email",
@@ -28,7 +32,7 @@ const Contact: React.FC = () => {
     },
     {
       platform: "GitHub",
-      handle: "34+ repos, all open",
+      handle: `${repoCount}+ repos, all open`,
       action: "Browse",
       icon: <Github strokeWidth={1.5} className="w-6 h-6" />,
       href: "https://github.com/Zephyrex21",
@@ -50,7 +54,8 @@ const Contact: React.FC = () => {
       className="scroll-mt-14 py-8 lg:py-16 sm:px-2 relative z-20"
     >
       <div className="bg-foreground text-background rounded-2xl px-6 py-8 sm:py-10 sm:px-10 md:py-14">
-        <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-22 items-start opacity-100">
+        <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-22 items-start opacity-100">
           {/* ================= LEFT — EDITORIAL ================= */}
           <motion.div
             variants={staggerContainer}
@@ -162,6 +167,24 @@ const Contact: React.FC = () => {
               ))}
             </motion.div>
           </motion.div>
+        </div>
+
+        {/* ================= CONTACT FORM ================= */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerContainer}
+          className="mt-14 lg:mt-20 pt-10 border-t border-background/15 max-w-2xl"
+        >
+          <motion.p
+            variants={fadeUp}
+            className="text-xs tracking-widest uppercase text-background/50 mb-6"
+          >
+            Or send a message directly
+          </motion.p>
+          <ContactForm />
+        </motion.div>
         </div>
       </div>
     </section>
