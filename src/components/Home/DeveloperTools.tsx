@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, memo } from "react";
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, useInView, useReducedMotion, Variants } from "framer-motion";
 import { Terminal, Github, Copy, Check } from "lucide-react";
 import { toolItem } from "../../utils/constants";
+import ToolkitIllustration from "./ToolkitIllustration";
 
 /* ===================== Data ===================== */
 
@@ -194,6 +195,7 @@ const ToolRow: React.FC<{ tool: toolItem }> = ({ tool }) => {
 /* ===================== Component ===================== */
 
 const DeveloperTools: React.FC = () => {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <section id="tools" className="scroll-mt-14 py-8 lg:py-16">
       <motion.div
@@ -221,36 +223,49 @@ const DeveloperTools: React.FC = () => {
 
         {/* Content */}
         <motion.div variants={stagger} className="px-2 sm:px-6">
-          <motion.div
-            variants={fadeUp}
-            className="bg-foreground rounded-2xl text-background shadow-xl"
-          >
-            <div
-              className="
-                grid grid-cols-1 gap-10 px-4 py-8 sm:px-6 sm:py-12
-                lg:grid-cols-[1fr_1.3fr]
-              "
+          <motion.div variants={fadeUp}>
+            <motion.div
+              animate={prefersReducedMotion ? undefined : { y: [0, -10, 0] }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="bg-foreground rounded-2xl text-background shadow-xl"
             >
-              {/* Left */}
-              <motion.div variants={fadeUp}>
-                <h3 className="text-[clamp(1.6rem,4vw,2.2rem)] font-semibold tracking-tight">
-                  Toolkits & CLI Tools
-                </h3>
+              <div
+                className="
+                  grid grid-cols-1 gap-10 px-4 py-8 sm:px-6 sm:py-12
+                  lg:grid-cols-[1fr_1.3fr]
+                "
+              >
+                {/* Left */}
+                <motion.div variants={fadeUp} className="flex flex-col">
+                  <div>
+                    <h3 className="text-[clamp(1.6rem,4vw,2.2rem)] font-semibold tracking-tight">
+                      Toolkits & CLI Tools
+                    </h3>
 
-                <p className="mt-4 leading-relaxed max-w-md text-background/90">
-                  Small, focused tools built with Node.js, TypeScript, and
-                  Python. Designed to be practical, well-tested, and genuinely
-                  reusable.
-                </p>
-              </motion.div>
+                    <p className="mt-4 leading-relaxed max-w-md text-background/90">
+                      Small, focused tools built with Node.js, TypeScript, and
+                      Python. Designed to be practical, well-tested, and
+                      genuinely reusable.
+                    </p>
+                  </div>
 
-              {/* Right */}
-              <motion.div variants={stagger} className="space-y-4">
-                {tools.map((tool) => (
-                  <ToolRow key={tool.name} tool={tool} />
-                ))}
-              </motion.div>
-            </div>
+                  <div className="flex-1 mt-8 min-h-[200px] text-background/70">
+                    <ToolkitIllustration />
+                  </div>
+                </motion.div>
+
+                {/* Right */}
+                <motion.div variants={stagger} className="space-y-4">
+                  {tools.map((tool) => (
+                    <ToolRow key={tool.name} tool={tool} />
+                  ))}
+                </motion.div>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </motion.div>

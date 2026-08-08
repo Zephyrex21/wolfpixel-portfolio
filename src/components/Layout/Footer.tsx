@@ -33,8 +33,8 @@ const Footer: React.FC = () => {
             max-w-4xl
           "
         >
-          Let's build something <br className="hidden sm:block" />
-          worth shipping.
+          Still learning. <br className="hidden sm:block" />
+          Always shipping.
         </motion.h2>
 
         <motion.p

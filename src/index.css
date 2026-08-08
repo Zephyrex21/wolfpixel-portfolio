@@ -120,6 +120,16 @@ body::after {
   );
 }
 
+/* Same idea, tuned for cards sitting on the normal (light) page
+   background rather than an inverted dark panel. */
+.card-spotlight {
+  background: radial-gradient(
+    280px circle at var(--x, 50%) var(--y, 50%),
+    color-mix(in srgb, var(--color-foreground) 6%, transparent),
+    transparent 70%
+  );
+}
+
 .typewriter-cursor {
   display: inline-block;
   width: 2px;
