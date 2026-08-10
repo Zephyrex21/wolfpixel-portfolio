@@ -79,7 +79,6 @@ function App() {
     };
   }, []);
 
-  // Theme toggle — a lightweight circular wipe expanding from the click
   // Theme toggle — lets the browser's own CSS transition engine smoothly
   // interpolate the actual theme colors in place (background, text,
   // borders), instead of faking a transition with an overlay.
@@ -111,19 +110,18 @@ function App() {
 
     document.documentElement.classList.add("theme-transitioning");
 
-    // Let the browser paint once with the transition rule active
-    // *before* the actual color values change — otherwise adding the
-    // class and flipping the theme collapse into the same frame and
-    // there's no "before" state to animate from, so it just jumps.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setTheme(next);
-      });
-    });
+    // Force a synchronous style flush so the transition rule above is
+    // guaranteed committed *before* the value change below — a forced
+    // reflow is instant (same tick), unlike waiting on animation
+    // frames, which added a perceptible ~30ms delay before the click
+    // visibly did anything.
+    void document.documentElement.offsetHeight;
+
+    setTheme(next);
 
     window.setTimeout(() => {
       document.documentElement.classList.remove("theme-transitioning");
-    }, 500);
+    }, 320);
   }, []);
 
   if (loading)

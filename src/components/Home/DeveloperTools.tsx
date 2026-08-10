@@ -57,6 +57,7 @@ const TILT_MAX_DEG = 5;
 
 const ToolRow: React.FC<{ tool: toolItem }> = ({ tool }) => {
   const rowRef = useRef<HTMLDivElement>(null);
+  const rectCache = useRef<DOMRect | null>(null);
   const isInView = useInView(rowRef, { once: true, amount: 0.6 });
 
   const [typed, setTyped] = useState("");
@@ -78,7 +79,7 @@ const ToolRow: React.FC<{ tool: toolItem }> = ({ tool }) => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = rowRef.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
+    const rect = rectCache.current ?? el.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
@@ -90,10 +91,15 @@ const ToolRow: React.FC<{ tool: toolItem }> = ({ tool }) => {
     el.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.015)`;
   };
 
+  const handleMouseEnter = () => {
+    rectCache.current = rowRef.current?.getBoundingClientRect() ?? null;
+  };
+
   const handleMouseLeave = () => {
     const el = rowRef.current;
     if (!el) return;
     el.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)";
+    rectCache.current = null;
   };
 
   const handleCopy = async (e: React.MouseEvent) => {
@@ -114,6 +120,7 @@ const ToolRow: React.FC<{ tool: toolItem }> = ({ tool }) => {
     <motion.div
       ref={rowRef}
       variants={fadeUp}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="

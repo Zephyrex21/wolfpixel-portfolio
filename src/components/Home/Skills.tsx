@@ -105,20 +105,38 @@ const Skills: React.FC = () => {
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const rafId = useRef<number | null>(null);
   const mousePos = useRef({ x: -9999, y: -9999 });
+  const gridRectCache = useRef<{ left: number; top: number } | null>(null);
+  const itemCenters = useRef<{ x: number; y: number }[]>([]);
 
-  const runDockLoop = () => {
+  // Measures the grid and every item's position exactly once, when the
+  // cursor enters — the grid's layout doesn't change mid-hover, so
+  // there's no need to re-read it on every mousemove or every frame of
+  // the dock animation (previously ~16 getBoundingClientRect calls per
+  // frame, 60 times a second, while hovering).
+  const measurePositions = () => {
     const grid = gridRef.current;
     if (!grid) return;
     const gridRect = grid.getBoundingClientRect();
+    gridRectCache.current = { left: gridRect.left, top: gridRect.top };
 
-    itemRefs.current.forEach((el) => {
-      if (!el) return;
+    itemCenters.current = itemRefs.current.map((el) => {
+      if (!el) return { x: 0, y: 0 };
       const rect = el.getBoundingClientRect();
-      const centerX = rect.left - gridRect.left + rect.width / 2;
-      const centerY = rect.top - gridRect.top + rect.height / 2;
+      return {
+        x: rect.left - gridRect.left + rect.width / 2,
+        y: rect.top - gridRect.top + rect.height / 2,
+      };
+    });
+  };
+
+  const runDockLoop = () => {
+    itemRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const center = itemCenters.current[i];
+      if (!center) return;
       const dist = Math.hypot(
-        mousePos.current.x - centerX,
-        mousePos.current.y - centerY,
+        mousePos.current.x - center.x,
+        mousePos.current.y - center.y,
       );
       const proximity = Math.max(0, 1 - dist / INFLUENCE_RADIUS);
       const scale = 1 + proximity * (MAX_SCALE - 1);
@@ -129,12 +147,13 @@ const Skills: React.FC = () => {
   };
 
   const handleMouseEnter = () => {
+    measurePositions();
     if (rafId.current) cancelAnimationFrame(rafId.current);
     rafId.current = requestAnimationFrame(runDockLoop);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = gridRef.current?.getBoundingClientRect();
+    const rect = gridRectCache.current;
     if (!rect) return;
     mousePos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };

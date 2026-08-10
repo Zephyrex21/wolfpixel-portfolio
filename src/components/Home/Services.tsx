@@ -2,12 +2,9 @@ import React, { useRef, memo } from "react";
 import { motion } from "framer-motion";
 import { Code, Globe, Server, Brain, Workflow, Package } from "lucide-react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { staggerContainer, fadeUp } from "../../utils/animations";
 import { serviceItem } from "../../utils/constants";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const services: serviceItem[] = [
   { icon: "Globe", title: "Full-Stack Web Apps" },

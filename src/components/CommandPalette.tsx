@@ -20,7 +20,8 @@ import {
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
-import { scrollToTarget, getLenis } from "../utils/smoothScroll";
+import { scrollToTarget } from "../utils/smoothScroll";
+import { acquireScrollLock, releaseScrollLock } from "../utils/scrollLock";
 import { Theme } from "../utils/constants";
 import { EASE_PREMIUM } from "../utils/animations";
 
@@ -228,11 +229,9 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
   useEffect(() => {
     if (open) {
       requestAnimationFrame(() => inputRef.current?.focus());
-      document.body.style.overflow = "hidden";
-      getLenis()?.stop();
+      acquireScrollLock();
     } else {
-      document.body.style.overflow = "";
-      getLenis()?.start();
+      releaseScrollLock();
       setQuery("");
     }
   }, [open]);

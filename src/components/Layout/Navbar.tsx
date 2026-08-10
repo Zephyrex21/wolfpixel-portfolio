@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, Moon, Sun, Code2, Command } from "lucide-react"
 import { SocialLink, Theme } from "../../utils/constants";
 import { motion, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
-import { getLenis } from "../../utils/smoothScroll";
+import { acquireScrollLock, releaseScrollLock } from "../../utils/scrollLock";
 import StaggeredMenu from "./StaggeredMenu";
 
 /* ===================== ANIMATIONS ===================== */
@@ -65,11 +65,10 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "auto";
     if (menuOpen) {
-      getLenis()?.stop();
+      acquireScrollLock();
     } else {
-      getLenis()?.start();
+      releaseScrollLock();
     }
   }, [menuOpen]);
 

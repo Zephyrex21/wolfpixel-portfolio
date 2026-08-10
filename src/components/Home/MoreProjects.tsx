@@ -32,11 +32,17 @@ const MoreProjectCard: React.FC<MoreProjectCardProps> = ({
   onHoverEnd,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const rectCache = useRef<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
+    rectCache.current = cardRef.current?.getBoundingClientRect() ?? null;
+    onHoverStart();
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = cardRef.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
+    const rect = rectCache.current ?? el.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const rotateY = (x / rect.width - 0.5) * TILT_MAX_DEG * 2;
@@ -53,6 +59,7 @@ const MoreProjectCard: React.FC<MoreProjectCardProps> = ({
       el.style.transform =
         "perspective(700px) rotateX(0deg) rotateY(0deg) translateY(0px)";
     }
+    rectCache.current = null;
     onHoverEnd();
   };
 
@@ -61,7 +68,7 @@ const MoreProjectCard: React.FC<MoreProjectCardProps> = ({
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        onMouseEnter={onHoverStart}
+        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
           opacity: isDimmed ? 0.55 : 1,
