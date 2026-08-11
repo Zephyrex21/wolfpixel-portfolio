@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Github, Linkedin, Mail, Moon, Sun, Code2, Command } from "lucide-react";
-import { SocialLink, Theme, ThemeToggleOrigin } from "../../utils/constants";
-import { motion, Variants } from "framer-motion";
+import { SocialLink, Theme } from "../../utils/constants";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
 import { acquireScrollLock, releaseScrollLock } from "../../utils/scrollLock";
 
@@ -30,9 +30,46 @@ const navItemVariants: Variants = {
   }),
 };
 
+/**
+ * A stable, top-level component (not defined inline inside Navbar) so React
+ * can tell it's the *same* component across re-renders and only remounts it
+ * when it's actually removed from the tree — otherwise the icon-morph
+ * animation below would restart from scratch on every scroll-triggered
+ * Navbar re-render instead of playing once, on an actual theme change.
+ */
+const ThemeToggleButton: React.FC<{
+  theme: Theme;
+  onToggleTheme: () => void;
+  compact?: boolean;
+}> = ({ theme, onToggleTheme, compact = false }) => (
+  <motion.button
+    onClick={onToggleTheme}
+    whileTap={{ scale: 0.9 }}
+    aria-label={
+      theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+    }
+    className={`relative flex items-center justify-center overflow-hidden rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:border-[var(--color-foreground)] transition-colors cursor-pointer ${
+      compact ? "w-8 h-8" : "w-9 h-9"
+    }`}
+  >
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.span
+        key={theme}
+        initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+        animate={{ rotate: 0, opacity: 1, scale: 1 }}
+        exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+        transition={{ duration: 0.3, ease: EASE_PREMIUM }}
+        className="flex items-center justify-center"
+      >
+        {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+      </motion.span>
+    </AnimatePresence>
+  </motion.button>
+);
+
 interface NavbarProps {
   theme: Theme;
-  onToggleTheme: (origin?: ThemeToggleOrigin) => void;
+  onToggleTheme: () => void;
 }
 
 /* ===================== COMPONENT ===================== */
@@ -135,27 +172,6 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
     marginLeft = (windowWidth - maxWidth) / 2;
   }
 
-  const ThemeToggleButton = ({ compact = false }: { compact?: boolean }) => (
-    <motion.button
-      onClick={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        onToggleTheme({
-          x: rect.left + rect.width / 2,
-          y: rect.top + rect.height / 2,
-        });
-      }}
-      whileTap={{ scale: 0.9 }}
-      aria-label={
-        theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
-      }
-      className={`flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:border-[var(--color-foreground)] transition-colors cursor-pointer ${
-        compact ? "w-8 h-8" : "w-9 h-9"
-      }`}
-    >
-      {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-    </motion.button>
-  );
-
   return (
     <>
       {/* ================= DESKTOP / TABLET ================= */}
@@ -256,7 +272,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
                 initial="hidden"
                 animate="visible"
               >
-                <ThemeToggleButton />
+                <ThemeToggleButton theme={theme} onToggleTheme={onToggleTheme} />
               </motion.div>
             </div>
           </div>
@@ -275,7 +291,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
             changeMenuColorOnOpen={false}
             onMenuOpen={() => setMenuOpen(true)}
             onMenuClose={() => setMenuOpen(false)}
-            themeToggle={<ThemeToggleButton compact />}
+            themeToggle={<ThemeToggleButton theme={theme} onToggleTheme={onToggleTheme} compact />}
           />
         </Suspense>
       )}

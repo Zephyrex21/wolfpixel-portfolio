@@ -8,19 +8,6 @@ export type SocialLink = {
 
 export type Theme = "light" | "dark";
 
-/** Viewport coordinates a theme toggle was triggered from — used to origin the reveal ripple. */
-export type ThemeToggleOrigin = { x: number; y: number };
-
-/**
- * Real `--t-bg` value per theme, kept in sync with the tokens defined in
- * `index.css`. Used by the toggle's reveal ripple so the growing circle is
- * the actual destination background color, not an approximation.
- */
-export const THEME_BG: Record<Theme, string> = {
-  light: "rgba(246, 245, 242, 1)",
-  dark: "rgba(13, 13, 13, 1)",
-};
-
 /**
  * Selected / flagship projects — rendered in the main expandable
  * project list. `image` is optional: when omitted (or when the file

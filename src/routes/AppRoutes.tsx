@@ -3,11 +3,11 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Error404 from "../pages/Error404";
 import Layout from "../components/Layout/Layout";
-import { Theme, ThemeToggleOrigin } from "../utils/constants";
+import { Theme } from "../utils/constants";
 
 interface AppRoutesProps {
   theme: Theme;
-  onToggleTheme: (origin?: ThemeToggleOrigin) => void;
+  onToggleTheme: () => void;
 }
 
 const AppRoutes: React.FC<AppRoutesProps> = ({ theme, onToggleTheme }) => {

@@ -22,12 +22,12 @@ import {
 } from "lucide-react";
 import { scrollToTarget } from "../utils/smoothScroll";
 import { acquireScrollLock, releaseScrollLock } from "../utils/scrollLock";
-import { Theme, ThemeToggleOrigin } from "../utils/constants";
+import { Theme } from "../utils/constants";
 import { EASE_PREMIUM } from "../utils/animations";
 
 interface CommandPaletteProps {
   theme: Theme;
-  onToggleTheme: (origin?: ThemeToggleOrigin) => void;
+  onToggleTheme: () => void;
 }
 
 interface CommandItem {
