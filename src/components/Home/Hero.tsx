@@ -136,7 +136,7 @@ const Hero: React.FC = () => {
                 whileHover={hoverScale}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => scrollToTarget("#contact")}
-                className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-85 transition cursor-pointer"
+                className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-85 transition cursor-pointer btn-glow"
               >
                 Let's collaborate
               </motion.button>

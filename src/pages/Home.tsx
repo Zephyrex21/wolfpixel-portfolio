@@ -25,18 +25,6 @@ const SectionFallback = () => <div className="min-h-[50vh]" />;
 
 const flagshipProjects: projectItem[] = [
   {
-    title: "Kaira AI Agent",
-    description:
-      "A multimodal AI agent built with React and Python — local wake-word detection, system registry management, autonomous coding tools, and persistent memory across sessions.",
-    tech: ["React", "Python", "TypeScript", "LLM Agents"],
-    link: "https://github.com/Zephyrex21/kaira-ai-agent",
-    codeLink: "https://github.com/Zephyrex21/kaira-ai-agent",
-    gradientFrom: "#2a2a2a",
-    gradientTo: "#0f0f0f",
-    status: "in-progress",
-    projectType: "personal",
-  },
-  {
     title: "Agentic RAG Assistant",
     description:
       "Agentic RAG assistant with hybrid retrieval and LLM reranking — every answer traces back to its exact source with verifiable citations.",
@@ -86,19 +74,6 @@ const flagshipProjects: projectItem[] = [
     projectType: "personal",
   },
   {
-    title: "Mind Forge",
-    description:
-      "An AI-powered mental wellness platform that helps users build healthier habits through intelligent conversations, guided journaling, mood tracking, and personalized daily check-ins.",
-    tech: ["React", "Node.js", "MongoDB", "Gemini"],
-    link: "https://mind-forge-iota-ashy.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/mind-forge",
-    image: { dark: "/screenshots/mind-forge-dark.webp", light: "/screenshots/mind-forge-light.webp" },
-    gradientFrom: "#2b2b2b",
-    gradientTo: "#111111",
-    status: "completed",
-    projectType: "personal",
-  },
-  {
     title: "GitHub Contribution Radar",
     description:
       "AI-powered GitHub contribution discovery and open-source tracking platform — GitHub OAuth, TanStack Query, a Gemini-based issue summarizer, CSV export, and a command palette.",
@@ -122,6 +97,31 @@ const flagshipProjects: projectItem[] = [
     gradientFrom: "#242424",
     gradientTo: "#0c0c0c",
     status: "completed",
+    projectType: "personal",
+  },
+  {
+    title: "Mind Forge",
+    description:
+      "An AI-powered mental wellness platform that helps users build healthier habits through intelligent conversations, guided journaling, mood tracking, and personalized daily check-ins.",
+    tech: ["React", "Node.js", "MongoDB", "Gemini"],
+    link: "https://mind-forge-iota-ashy.vercel.app",
+    codeLink: "https://github.com/Zephyrex21/mind-forge",
+    image: { dark: "/screenshots/mind-forge-dark.webp", light: "/screenshots/mind-forge-light.webp" },
+    gradientFrom: "#2b2b2b",
+    gradientTo: "#111111",
+    status: "completed",
+    projectType: "personal",
+  },
+  {
+    title: "Kaira AI Agent",
+    description:
+      "A multimodal AI agent built with React and Python — local wake-word detection, system registry management, autonomous coding tools, and persistent memory across sessions.",
+    tech: ["React", "Python", "TypeScript", "LLM Agents"],
+    link: "https://github.com/Zephyrex21/kaira-ai-agent",
+    codeLink: "https://github.com/Zephyrex21/kaira-ai-agent",
+    gradientFrom: "#2a2a2a",
+    gradientTo: "#0f0f0f",
+    status: "in-progress",
     projectType: "personal",
   },
 ];

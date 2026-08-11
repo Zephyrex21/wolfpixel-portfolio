@@ -39,9 +39,12 @@
   color-scheme: dark;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Note: no `scroll-behavior: smooth` here on purpose — Lenis (see
+   utils/smoothScroll.ts) drives every programmatic scroll (nav links,
+   back-to-top) in JS. CSS smooth-scroll fights it: Lenis nudges
+   `window.scrollY` every animation frame, and the browser tried to
+   smooth-animate *each of those* nudges too, so the two fought each
+   other and the result was stuttery instead of one clean motion. */
 
 /* ===================== THEME TOGGLE TRANSITION ===================== */
 /* Applied for a brief window right when the theme flips. Lets every
@@ -53,8 +56,8 @@ html {
 .theme-transitioning,
 .theme-transitioning *:not(svg):not(svg *) {
   transition:
-    background-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.25s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    background-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 body {
@@ -68,6 +71,26 @@ body {
 ::selection {
   background: var(--t-fg);
   color: var(--t-bg);
+}
+
+/* Keyboard-focus ring, on-brand instead of the browser default (usually
+   blue) — only shows for keyboard/assistive-tech navigation, never on
+   mouse click, so it doesn't add visual noise to normal interaction. */
+:focus-visible {
+  outline: 2px solid var(--t-fg);
+  outline-offset: 3px;
+  transition: outline-offset 0.15s ease;
+}
+
+/* Soft shadow bloom on primary (solid) CTA buttons — adds a touch of
+   physical depth on hover instead of just the opacity/scale change. */
+.btn-glow {
+  transition:
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-glow:hover {
+  box-shadow: 0 10px 32px -8px color-mix(in srgb, var(--color-foreground) 45%, transparent);
 }
 
 /* ===================== FILM GRAIN ===================== */

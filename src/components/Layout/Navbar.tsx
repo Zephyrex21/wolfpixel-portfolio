@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Github, Linkedin, Mail, Moon, Sun, Code2, Command } from "lucide-react";
-import { SocialLink, Theme } from "../../utils/constants";
+import { SocialLink, Theme, ThemeToggleOrigin } from "../../utils/constants";
 import { motion, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
 import { acquireScrollLock, releaseScrollLock } from "../../utils/scrollLock";
@@ -32,7 +32,7 @@ const navItemVariants: Variants = {
 
 interface NavbarProps {
   theme: Theme;
-  onToggleTheme: () => void;
+  onToggleTheme: (origin?: ThemeToggleOrigin) => void;
 }
 
 /* ===================== COMPONENT ===================== */
@@ -137,7 +137,13 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
 
   const ThemeToggleButton = ({ compact = false }: { compact?: boolean }) => (
     <motion.button
-      onClick={onToggleTheme}
+      onClick={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        onToggleTheme({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        });
+      }}
       whileTap={{ scale: 0.9 }}
       aria-label={
         theme === "dark" ? "Switch to light mode" : "Switch to dark mode"

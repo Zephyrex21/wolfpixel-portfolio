@@ -61,7 +61,7 @@ const Error404: React.FC = () => {
           </button>
           <button
             onClick={() => navigate("/")}
-            className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-90 transition hover:cursor-pointer hover:scale-95"
+            className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-90 transition hover:cursor-pointer hover:scale-95 btn-glow"
           >
             Go home
           </button>

@@ -29,9 +29,12 @@ const BackToTop: React.FC = () => {
     const lenis = getLenis();
     if (lenis) {
       lenis.scrollTo(0, { duration: 1.4 });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
     }
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
   };
 
   return (

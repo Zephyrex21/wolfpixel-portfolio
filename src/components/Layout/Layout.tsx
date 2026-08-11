@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Theme } from "../../utils/constants";
+import { Theme, ThemeToggleOrigin } from "../../utils/constants";
 
 interface LayoutProps {
   theme: Theme;
-  onToggleTheme: () => void;
+  onToggleTheme: (origin?: ThemeToggleOrigin) => void;
 }
 
 const Layout: React.FC<LayoutProps> = ({ theme, onToggleTheme }) => {

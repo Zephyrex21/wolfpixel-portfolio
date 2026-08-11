@@ -3,12 +3,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import PageLoader from "./components/Loaders/PageLoader";
 import { AnimatePresence } from "framer-motion";
-import { Theme } from "./utils/constants";
+import { Theme, ThemeToggleOrigin, THEME_BG } from "./utils/constants";
 import { initSmoothScroll, destroySmoothScroll, scrollToTarget } from "./utils/smoothScroll";
 import { printConsoleEasterEgg } from "./utils/consoleEasterEgg";
 import CommandPalette from "./components/CommandPalette";
 import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
+import ThemeRipple from "./components/ThemeRipple";
 
 function getInitialTheme(): Theme {
   if (typeof window === "undefined") return "light";
@@ -22,6 +23,7 @@ function getInitialTheme(): Theme {
 function App() {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [rippleOrigin, setRippleOrigin] = useState<ThemeToggleOrigin | null>(null);
   const themeRef = useRef(theme);
   themeRef.current = theme;
 
@@ -79,25 +81,27 @@ function App() {
     };
   }, []);
 
-  // Theme toggle — lets the browser's own CSS transition engine smoothly
-  // interpolate the actual theme colors in place (background, text,
-  // borders), instead of faking a transition with an overlay.
+  // Theme toggle — a circle grows from wherever the toggle was clicked,
+  // filled with the *destination* theme's actual background color, while
+  // every element on the real page repaints its own colors underneath via
+  // a scoped CSS transition (unchanged from before). The two are timed
+  // together, so by the time the circle finishes covering the viewport the
+  // page has already fully become the new theme — the circle just fades
+  // out with nothing left to reveal, instead of sitting there as a cover.
   //
-  // Two previous approaches were tried and rejected:
-  //  - View Transitions API: rasterizes the *entire page* into an
-  //    image on every toggle, measured ~800ms+ of real blocking work
-  //    on this page (photos, blur, gradients) before anything even
-  //    moved. Felt frozen.
-  //  - A JS-driven "circle wipe" overlay: cheap, but it's a flat solid
-  //    color sweeping across the screen, covering the real content
-  //    underneath — reads as a loading flash, not a theme change.
+  // Two earlier approaches were tried and rejected before this one:
+  //  - View Transitions API: rasterizes the *entire page* into an image on
+  //    every toggle, measured ~800ms+ of real blocking work on this page
+  //    (photos, blur, gradients) before anything even moved. Felt frozen.
+  //  - A flat full-screen wipe in one hardcoded color: cheap, but reads as
+  //    a loading flash rather than a theme change, since it just parks a
+  //    solid color over the real content instead of revealing it.
   //
-  // This version does neither: it adds a scoped class that gives every
-  // element a short `transition` on color/background/border, flips the
-  // theme, then removes the class once the transition finishes. The
-  // real page content is visible and repainting its own colors the
-  // entire time — no snapshot, no cover, no flash.
-  const toggleTheme = useCallback(() => {
+  // Using the actual destination background color, originating from the
+  // click point, and keeping it in sync with the real content transition
+  // avoids both: it's just a CSS transform + a small fixed div, and it
+  // never has anything to hide because the truth is already underneath it.
+  const toggleTheme = useCallback((origin?: ThemeToggleOrigin) => {
     const next: Theme = themeRef.current === "dark" ? "light" : "dark";
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -109,19 +113,25 @@ function App() {
     }
 
     document.documentElement.classList.add("theme-transitioning");
-
-    // Force a synchronous style flush so the transition rule above is
-    // guaranteed committed *before* the value change below — a forced
-    // reflow is instant (same tick), unlike waiting on animation
-    // frames, which added a perceptible ~30ms delay before the click
-    // visibly did anything.
-    void document.documentElement.offsetHeight;
+    void document.documentElement.offsetHeight; // forced reflow, see note below
 
     setTheme(next);
+    setRippleOrigin(
+      origin ?? { x: window.innerWidth - 48, y: 32 }, // sensible default for keyboard-triggered toggles (e.g. command palette)
+    );
 
     window.setTimeout(() => {
       document.documentElement.classList.remove("theme-transitioning");
-    }, 320);
+    }, 550);
+  }, []);
+
+  // Forced reflow above: a synchronous style flush guarantees the
+  // transition rule is committed *before* the value change — instant
+  // (same tick), unlike waiting on animation frames, which added a
+  // perceptible ~30ms delay before the click visibly did anything.
+
+  const handleRippleComplete = useCallback(() => {
+    setRippleOrigin(null);
   }, []);
 
   if (loading)
@@ -134,6 +144,11 @@ function App() {
   return (
     <Router>
       <ScrollProgress />
+      <ThemeRipple
+        origin={rippleOrigin}
+        color={THEME_BG[theme]}
+        onComplete={handleRippleComplete}
+      />
       <CommandPalette theme={theme} onToggleTheme={toggleTheme} />
       <AppRoutes theme={theme} onToggleTheme={toggleTheme} />
       <BackToTop />

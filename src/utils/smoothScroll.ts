@@ -52,5 +52,8 @@ export function scrollToTarget(
   }
   const el =
     typeof target === "string" ? document.querySelector(target) : target;
-  el?.scrollIntoView({ behavior: "smooth" });
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  el?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
 }
