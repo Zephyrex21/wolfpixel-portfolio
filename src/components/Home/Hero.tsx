@@ -120,7 +120,11 @@ const Hero: React.FC = () => {
 
               <div>
                 <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  <CountUp target={150} suffix="+" duration={3.2} />
+                  {/* 85 LeetCode + 132 Code360 + 18 GeeksforGeeks = 235.
+                      No official public API for any of these three, so
+                      this is a hand-maintained total — update it here
+                      when the count changes meaningfully. */}
+                  <CountUp target={235} suffix="+" duration={3.2} />
                 </p>
                 <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
                   DSA Problems

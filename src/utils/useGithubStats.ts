@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const GITHUB_USERNAME = "Zephyrex21";
-const FALLBACK_REPO_COUNT = 35;
+const FALLBACK_REPO_COUNT = 37; // matches live count as of this update — see api.github.com/users/Zephyrex21
 const CACHE_KEY = "gh_stats_v1";
 const CACHE_TTL = 1000 * 60 * 60; // 1 hour
 

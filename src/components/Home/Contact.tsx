@@ -40,7 +40,7 @@ const Contact: React.FC = () => {
     },
     {
       platform: "LeetCode",
-      handle: "150+ problems solved",
+      handle: "85+ problems solved",
       action: "View profile",
       icon: <Code2 strokeWidth={1.5} className="w-6 h-6" />,
       href: "https://leetcode.com/u/Zephyrex_21/",
