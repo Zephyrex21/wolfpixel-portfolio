@@ -48,14 +48,24 @@ const Error404: React.FC = () => {
           The system could not resolve the destination.
         </motion.p>
 
-        {/* Action Button */}
-        <motion.button
+        {/* Action Buttons */}
+        <motion.div
           variants={fadeUp}
-          onClick={() => navigate(-1)}
-          className="mt-4 px-10 py-4 bg-foreground text-background rounded-full hover:opacity-90 transition hover:cursor-pointer hover:scale-95"
+          className="mt-4 flex flex-col sm:flex-row gap-4"
         >
-          ← Return to previous page
-        </motion.button>
+          <button
+            onClick={() => navigate(-1)}
+            className="px-10 py-4 border border-border rounded-full hover:bg-foreground/5 transition hover:cursor-pointer hover:scale-95"
+          >
+            ← Return to previous page
+          </button>
+          <button
+            onClick={() => navigate("/")}
+            className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-90 transition hover:cursor-pointer hover:scale-95"
+          >
+            Go home
+          </button>
+        </motion.div>
 
         {/* Ambient system hint */}
         <motion.span

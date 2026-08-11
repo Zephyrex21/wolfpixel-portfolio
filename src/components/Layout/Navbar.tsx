@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Github, Linkedin, Mail, Moon, Sun, Code2, Command } from "lucide-react";
 import { SocialLink, Theme } from "../../utils/constants";
 import { motion, Variants } from "framer-motion";
 import { EASE_PREMIUM } from "../../utils/animations";
 import { acquireScrollLock, releaseScrollLock } from "../../utils/scrollLock";
-import StaggeredMenu from "./StaggeredMenu";
+
+// Lazy-loaded: pulls in GSAP, which desktop visitors never need since this
+// only ever renders below the 768px breakpoint.
+const StaggeredMenu = lazy(() => import("./StaggeredMenu"));
 
 /* ===================== ANIMATIONS ===================== */
 
@@ -256,17 +259,19 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
 
       {/* ================= MOBILE ================= */}
       {windowWidth < 768 && (
-        <StaggeredMenu
-          items={menuItems}
-          socialItems={staggeredSocials}
-          colors={menuColors}
-          menuButtonColor={toggleColor}
-          openMenuButtonColor={toggleColor}
-          changeMenuColorOnOpen={false}
-          onMenuOpen={() => setMenuOpen(true)}
-          onMenuClose={() => setMenuOpen(false)}
-          themeToggle={<ThemeToggleButton compact />}
-        />
+        <Suspense fallback={null}>
+          <StaggeredMenu
+            items={menuItems}
+            socialItems={staggeredSocials}
+            colors={menuColors}
+            menuButtonColor={toggleColor}
+            openMenuButtonColor={toggleColor}
+            changeMenuColorOnOpen={false}
+            onMenuOpen={() => setMenuOpen(true)}
+            onMenuClose={() => setMenuOpen(false)}
+            themeToggle={<ThemeToggleButton compact />}
+          />
+        </Suspense>
       )}
     </>
   );

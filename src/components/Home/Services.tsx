@@ -1,4 +1,4 @@
-import React, { useRef, memo } from "react";
+import React, { useEffect, useRef, memo } from "react";
 import { motion } from "framer-motion";
 import { Code, Globe, Server, Brain, Workflow, Package } from "lucide-react";
 import gsap from "gsap";
@@ -35,11 +35,13 @@ const Services: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const topRowRef = useRef<HTMLDivElement>(null);
   const bottomRowRef = useRef<HTMLDivElement>(null);
+  const topTweenRef = useRef<gsap.core.Tween | null>(null);
+  const bottomTweenRef = useRef<gsap.core.Tween | null>(null);
 
   useGSAP(
     () => {
       // Continuous marquee — slow, calm infinite loop in each direction.
-      gsap.to(topRowRef.current, {
+      topTweenRef.current = gsap.to(topRowRef.current, {
         xPercent: -50,
         ease: "none",
         repeat: -1,
@@ -48,7 +50,7 @@ const Services: React.FC = () => {
 
       // Bottom row scrolls the opposite way: start shifted, animate back to 0.
       gsap.set(bottomRowRef.current, { xPercent: -50 });
-      gsap.to(bottomRowRef.current, {
+      bottomTweenRef.current = gsap.to(bottomRowRef.current, {
         xPercent: 0,
         ease: "none",
         repeat: -1,
@@ -57,6 +59,29 @@ const Services: React.FC = () => {
     },
     { scope: containerRef },
   );
+
+  // Pause the marquee tweens when the section scrolls out of view instead of
+  // burning rAF cycles on two infinite loops the whole page lifetime.
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          topTweenRef.current?.play();
+          bottomTweenRef.current?.play();
+        } else {
+          topTweenRef.current?.pause();
+          bottomTweenRef.current?.pause();
+        }
+      },
+      { threshold: 0 },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section

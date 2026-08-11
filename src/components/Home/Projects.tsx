@@ -3,24 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronDown, Github } from "lucide-react";
 import { projectItem, Theme } from "../../utils/constants";
 import { staggerContainer, fadeUp, EASE_PREMIUM } from "../../utils/animations";
-
-/* ===================== MEDIA QUERY HOOK ===================== */
-
-const useMediaQuery = (query: string) => {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [matches, query]);
-
-  return matches;
-};
+import { useMediaQuery } from "../../utils/useMediaQuery";
 
 /* ===================== ANIMATIONS ===================== */
 

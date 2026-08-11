@@ -8,6 +8,7 @@ import {
   EASE_PREMIUM,
 } from "../../utils/animations";
 import { journeyItem } from "../../utils/constants";
+import { useMediaQuery } from "../../utils/useMediaQuery";
 
 /* ===================== DATA ===================== */
 
@@ -69,7 +70,7 @@ const About = () => {
   });
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-  const isDesktop = () => window.innerWidth >= 1024;
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const toggleItem = (idx: number) => {
     setActiveIndex((prev) => (prev === idx ? null : idx));
@@ -153,14 +154,14 @@ const About = () => {
                   initial="hidden"
                   whileInView="show"
                   viewport={{ once: true, amount: 0.4 }}
-                  onHoverStart={() => isDesktop() && setActiveIndex(idx)}
-                  onHoverEnd={() => isDesktop() && setActiveIndex(null)}
+                  onHoverStart={() => isDesktop && setActiveIndex(idx)}
+                  onHoverEnd={() => isDesktop && setActiveIndex(null)}
                   className="relative"
                 >
                   {/* HEADER */}
                   <motion.div
-                    onClick={() => !isDesktop() && toggleItem(idx)}
-                    whileHover={isDesktop() ? { scale: 1.015 } : undefined}
+                    onClick={() => !isDesktop && toggleItem(idx)}
+                    whileHover={isDesktop ? { scale: 1.015 } : undefined}
                     transition={{ type: "spring", stiffness: 260, damping: 24 }}
                     className="cursor-pointer py-2 sm:py-3 lg:py-4"
                   >

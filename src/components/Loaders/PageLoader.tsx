@@ -5,12 +5,14 @@ import { EASE_PREMIUM } from "../../utils/animations";
 const overlay = {
   hidden: { y: 40, opacity: 0 },
   visible: {
+    y: 0,
     opacity: 1,
-    transition: { y: 0, duration: 0.8, ease: EASE_PREMIUM },
+    transition: { duration: 0.8, ease: EASE_PREMIUM },
   },
   exit: {
+    y: 40,
     opacity: 0,
-    transition: { y: 40, duration: 0.8, ease: EASE_PREMIUM },
+    transition: { duration: 0.8, ease: EASE_PREMIUM },
   },
 };
 

@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2 } from "lucide-react";
-import YourImg from "/assets/photo-cutout.png";
+import YourImg from "/assets/photo-cutout.webp";
 import CVPDF from "/assets/resume.pdf";
 import { SocialLink } from "../../utils/constants";
 import { scrollToTarget } from "../../utils/smoothScroll";
@@ -210,7 +210,8 @@ const Hero: React.FC = () => {
               <img
                 src={YourImg}
                 alt="Saurabh Raj Shekhar"
-                loading="lazy"
+                loading="eager"
+                fetchPriority="high"
                 className="
                   relative
                   z-10
