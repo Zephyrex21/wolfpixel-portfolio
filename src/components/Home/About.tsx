@@ -12,6 +12,12 @@ import { useMediaQuery } from "../../utils/useMediaQuery";
 
 /* ===================== DATA ===================== */
 
+const dsaPlatforms = [
+  { name: "LeetCode", solved: 85, href: "https://leetcode.com/u/Zephyrex_21/" },
+  { name: "Code360", solved: 132, href: "https://www.naukri.com/code360/profile/Zephyrex" },
+  { name: "GeeksforGeeks", solved: 18, href: "https://www.geeksforgeeks.org/profile/shekharsagbw7" },
+];
+
 // Grounded in actual repo history from github.com/Zephyrex21
 const journeyItems: journeyItem[] = [
   {
@@ -46,9 +52,9 @@ const journeyItems: journeyItem[] = [
   },
   {
     period: "Aug 2026 — Now",
-    title: "Multimodal AI Agents",
+    title: "Agents and Full-Stack, in Parallel",
     details:
-      "Currently building a multimodal AI agent with wake-word detection, autonomous coding tools, and persistent memory — the current edge of what I'm exploring.",
+      "Currently building a multimodal AI agent with wake-word detection, autonomous coding tools, and persistent memory — alongside a full MERN platform for my own class section, with three-role auth, Docker + CI, and 40+ tests. Two different kinds of production-grade, at the same time.",
   },
 ];
 
@@ -99,15 +105,41 @@ const About = () => {
           className="mt-6 md:mt-8 max-w-3xl text-base sm:text-xl leading-[1.9] text-muted-foreground"
         >
           I'm a 3rd-year CSE (Data Science) student at NSUT Delhi who learns
-          by shipping. I build full-stack — React frontends, Express/Node
-          backends, and Python/FastAPI ML pipelines — and I'm most drawn to
-          the point where clean software architecture meets AI/ML.
+          by shipping, not by watching tutorials. This past year that's meant
+          full MERN platforms with real auth and test coverage, an ISRO
+          hackathon submission, and — most recently — a shift into agentic
+          AI: RAG pipelines with verifiable citations, an in-browser data
+          analyst agent, and vision-model interpretability tooling.
           <br />
           <br />
-          Outside of building, I spend a lot of time on DSA and competitive
-          programming — it's the other half of how I think about writing
-          software.
+          Underneath all of it is 235+ solved DSA problems across LeetCode,
+          Code360, and GeeksforGeeks. Competitive programming isn't a
+          separate hobby from the software — it's the other half of how I
+          think about writing it.
         </motion.p>
+
+        {/* DSA PRACTICE */}
+        <motion.div variants={fadeUp} className="mt-8 md:mt-10">
+          <p className="mb-3 text-xs sm:text-sm tracking-[0.35em] uppercase text-muted-foreground/70">
+            DSA Practice
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {dsaPlatforms.map((platform) => (
+              <a
+                key={platform.name}
+                href={platform.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-full border border-border text-xs sm:text-sm text-muted-foreground hover:border-foreground/40 hover:text-foreground transition-colors"
+              >
+                {platform.name}{" "}
+                <span className="text-foreground/40">
+                  · {platform.solved} solved
+                </span>
+              </a>
+            ))}
+          </div>
+        </motion.div>
 
         {/* CERTIFICATIONS */}
         <motion.div
