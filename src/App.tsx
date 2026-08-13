@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useLayoutEffect, useState, useCallback, useRef, lazy, Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import PageLoader from "./components/Loaders/PageLoader";
@@ -9,6 +9,10 @@ import { printConsoleEasterEgg } from "./utils/consoleEasterEgg";
 import CommandPalette from "./components/CommandPalette";
 import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
+
+// Lazy-loaded: a hidden Easter egg most visitors never trigger, so it
+// shouldn't cost anything in the main bundle for the ones who don't.
+const SortVisualizer = lazy(() => import("./components/SortVisualizer"));
 
 function getInitialTheme(): Theme {
   if (typeof window === "undefined") return "light";
@@ -143,6 +147,9 @@ function App() {
     <Router>
       <ScrollProgress />
       <CommandPalette theme={theme} onToggleTheme={toggleTheme} />
+      <Suspense fallback={null}>
+        <SortVisualizer />
+      </Suspense>
       <AppRoutes theme={theme} onToggleTheme={toggleTheme} />
       <BackToTop />
     </Router>

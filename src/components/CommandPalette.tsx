@@ -19,6 +19,7 @@ import {
   CornerDownLeft,
   ArrowUp,
   ArrowDown,
+  SortAsc,
 } from "lucide-react";
 import { scrollToTarget } from "../utils/smoothScroll";
 import { acquireScrollLock, releaseScrollLock } from "../utils/scrollLock";
@@ -176,6 +177,15 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
         icon: theme === "dark" ? <Sun size={16} /> : <Moon size={16} />,
         keywords: "dark light appearance theme",
         action: () => onToggleTheme(),
+      },
+      {
+        id: "action-sort-visualizer",
+        label: "Run a sort",
+        group: "Actions",
+        icon: <SortAsc size={16} />,
+        keywords: "algorithm dsa bubble quick visualize array",
+        action: () =>
+          window.dispatchEvent(new CustomEvent("open-sort-visualizer")),
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

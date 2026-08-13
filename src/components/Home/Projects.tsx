@@ -21,16 +21,32 @@ const bgFill = {
 
 /* ===================== PREVIEW (real screenshot, else generated gradient) ===================== */
 
-const ProjectPreview: React.FC<{ project: projectItem; theme: Theme }> = ({
-  project,
-  theme,
-}) => {
+const ProjectPreview: React.FC<{
+  project: projectItem;
+  theme: Theme;
+  /** Plays a left-to-right clip-path wipe on mount — used when a project
+      card expands (a deliberate reveal moment), skipped for the
+      cursor-following floating preview (which needs to feel instant,
+      not staged). */
+  revealOnMount?: boolean;
+}> = ({ project, theme, revealOnMount = false }) => {
   const [errored, setErrored] = useState(false);
   const src = project.image?.[theme];
 
+  const wipeProps = revealOnMount
+    ? {
+        initial: { clipPath: "inset(0 100% 0 0)" },
+        animate: { clipPath: "inset(0 0% 0 0)" },
+        transition: { duration: 0.7, ease: EASE_PREMIUM },
+      }
+    : {};
+
   if (src && !errored) {
     return (
-      <div className="relative aspect-video overflow-hidden rounded-xl border border-border">
+      <motion.div
+        {...wipeProps}
+        className="relative aspect-video overflow-hidden rounded-xl border border-border"
+      >
         <img
           src={src}
           alt={`${project.title} preview`}
@@ -38,14 +54,15 @@ const ProjectPreview: React.FC<{ project: projectItem; theme: Theme }> = ({
           onError={() => setErrored(true)}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-[1.04]"
         />
-      </div>
+      </motion.div>
     );
   }
 
   // Generated fallback — keeps every row feeling intentional even
   // without a captured screenshot.
   return (
-    <div
+    <motion.div
+      {...wipeProps}
       className="relative aspect-video overflow-hidden rounded-xl border border-border flex items-center justify-center"
       style={{
         backgroundImage: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
@@ -62,7 +79,7 @@ const ProjectPreview: React.FC<{ project: projectItem; theme: Theme }> = ({
       <span className="relative font-funnel text-2xl sm:text-3xl font-bold text-white/90 tracking-tight px-4 text-center">
         {project.title}
       </span>
-    </div>
+    </motion.div>
   );
 };
 
@@ -369,7 +386,7 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
                       >
                         {/* Preview */}
                         <div className="lg:col-span-5">
-                          <ProjectPreview project={project} theme={theme} />
+                          <ProjectPreview project={project} theme={theme} revealOnMount />
                         </div>
 
                         {/* Description + Tech */}

@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { motion } from "framer-motion";
+import React, { memo, useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2 } from "lucide-react";
 import YourImg from "/assets/photo-cutout.webp";
 import CVPDF from "/assets/resume.pdf";
@@ -9,6 +9,7 @@ import CountUp from "../CountUp";
 import TypewriterRoles from "./TypewriterRoles";
 import SplitText from "../SplitText";
 import { useGithubStats } from "../../utils/useGithubStats";
+import { useGithubActivity, formatRelativeTime } from "../../utils/useGithubActivity";
 import {
   staggerContainerSlow,
   fadeUp,
@@ -20,6 +21,30 @@ import {
 
 const Hero: React.FC = () => {
   const { repoCount } = useGithubStats();
+  const { activity } = useGithubActivity();
+  const prefersReducedMotion = useReducedMotion();
+
+  // Cinematic exit as the person scrolls from Hero into Projects: the
+  // whole hero recedes (shrinks slightly, drifts up, fades) instead of
+  // just sliding off-screen flat. Progress runs 0→1 across exactly the
+  // hero's own scroll distance — 0 the moment it starts leaving the top
+  // of the viewport, 1 once it's fully scrolled past.
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  // Scroll-linked parallax is exactly the kind of continuous motion
+  // prefers-reduced-motion exists for (unlike the one-time entrance
+  // fades elsewhere on this page) — skip it outright rather than tune
+  // it down.
+  const heroExitStyle = prefersReducedMotion
+    ? {}
+    : { opacity: heroOpacity, scale: heroScale, y: heroY };
+
   const socials: SocialLink[] = [
     { href: "https://github.com/Zephyrex21", icon: <Github />, label: "GitHub" },
     {
@@ -36,8 +61,15 @@ const Hero: React.FC = () => {
   ];
 
   return (
-    <section id="home" className="relative mb-10 sm:mb-0 sm:h-[94vh] overflow-hidden">
-      <div className="xl:max-w-7xl mx-auto px-4 sm:px-6 w-full h-full">
+    <section
+      ref={heroRef}
+      id="home"
+      className="relative mb-10 sm:mb-0 sm:h-[94vh] overflow-hidden"
+    >
+      <motion.div
+        style={heroExitStyle}
+        className="xl:max-w-7xl mx-auto px-4 sm:px-6 w-full h-full"
+      >
         <div className="flex gap-20 h-full lg:items-center">
           {/* LEFT — TEXT */}
           <motion.div
@@ -83,6 +115,20 @@ const Hero: React.FC = () => {
               pipelines to algorithm visualizers — and I ship most of what I
               learn.
             </motion.p>
+
+            {activity && (
+              <motion.div
+                variants={fadeUp}
+                className="mb-6 inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-xs sm:text-sm text-muted-foreground"
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground/50" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-foreground" />
+                </span>
+                Last commit {formatRelativeTime(activity.timestamp)} on{" "}
+                <span className="text-foreground font-medium">{activity.repo}</span>
+              </motion.div>
+            )}
 
             <motion.div
               variants={fadeUp}
@@ -235,7 +281,7 @@ const Hero: React.FC = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
