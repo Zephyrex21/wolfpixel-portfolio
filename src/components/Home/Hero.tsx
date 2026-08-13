@@ -1,4 +1,4 @@
-import React, { memo, useRef } from "react";
+import React, { memo } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2 } from "lucide-react";
 import YourImg from "/assets/photo-cutout.webp";
@@ -25,25 +25,31 @@ const Hero: React.FC = () => {
   const prefersReducedMotion = useReducedMotion();
 
   // Cinematic exit as the person scrolls from Hero into Projects: the
-  // whole hero recedes (shrinks slightly, drifts up, fades) instead of
-  // just sliding off-screen flat. Progress runs 0→1 across exactly the
-  // hero's own scroll distance — 0 the moment it starts leaving the top
-  // of the viewport, 1 once it's fully scrolled past.
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  // Scroll-linked parallax is exactly the kind of continuous motion
-  // prefers-reduced-motion exists for (unlike the one-time entrance
-  // fades elsewhere on this page) — skip it outright rather than tune
-  // it down.
+  // text column fades and drifts up slightly instead of just sliding
+  // off-screen flat.
+  //
+  // Two things broke in the first version of this, both from the same
+  // root cause — the effect was applied to the *shared* wrapper that
+  // both the text column and the absolutely-positioned photo live in:
+  //  - It included a `scale` transform. Scaling a container shrinks
+  //    absolutely-positioned descendants toward the container's center
+  //    too, and the photo sits far off-center (`right-[20%]` etc.) — so
+  //    it visibly drifted sideways on every scroll tick. Dropped `scale`
+  //    entirely; opacity + a small `y` drift doesn't have this problem.
+  //  - Progress was measured relative to the *hero element's own height*
+  //    ("start start" → "end start"). On mobile the hero has no fixed
+  //    height (the photo is hidden below `sm:`, so it's just as tall as
+  //    the stacked text), which could compress the whole effect into a
+  //    very short, aggressive scroll distance — dragging the heading up
+  //    behind the fixed navbar almost immediately. Switched to plain
+  //    page scroll position over a fixed pixel range instead, so the
+  //    timing is identical regardless of the hero's rendered height.
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 350], [1, 0]);
+  const heroY = useTransform(scrollY, [0, 350], [0, -30]);
   const heroExitStyle = prefersReducedMotion
     ? {}
-    : { opacity: heroOpacity, scale: heroScale, y: heroY };
+    : { opacity: heroOpacity, y: heroY };
 
   const socials: SocialLink[] = [
     { href: "https://github.com/Zephyrex21", icon: <Github />, label: "GitHub" },
@@ -61,21 +67,15 @@ const Hero: React.FC = () => {
   ];
 
   return (
-    <section
-      ref={heroRef}
-      id="home"
-      className="relative mb-10 sm:mb-0 sm:h-[94vh] overflow-hidden"
-    >
-      <motion.div
-        style={heroExitStyle}
-        className="xl:max-w-7xl mx-auto px-4 sm:px-6 w-full h-full"
-      >
+    <section id="home" className="relative mb-10 sm:mb-0 sm:h-[94vh] overflow-hidden">
+      <div className="xl:max-w-7xl mx-auto px-4 sm:px-6 w-full h-full">
         <div className="flex gap-20 h-full lg:items-center">
           {/* LEFT — TEXT */}
           <motion.div
             variants={staggerContainerSlow}
             initial="hidden"
             animate="show"
+            style={heroExitStyle}
             className="w-full max-w-2xl z-10 relative"
           >
             <motion.p
@@ -281,7 +281,7 @@ const Hero: React.FC = () => {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

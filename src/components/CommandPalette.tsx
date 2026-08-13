@@ -183,7 +183,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
         label: "Run a sort",
         group: "Actions",
         icon: <SortAsc size={16} />,
-        keywords: "algorithm dsa bubble quick visualize array",
+        keywords: "algorithm dsa bubble quick merge visualize array",
         action: () =>
           window.dispatchEvent(new CustomEvent("open-sort-visualizer")),
       },

@@ -90,11 +90,69 @@ function quickSortSteps(input: number[]): SortStep[] {
   return steps;
 }
 
-type Algorithm = "bubble" | "quick";
+/** Real merge sort — every comparison and every write during the merge
+    step is recorded. Doesn't mark ranges "sorted" mid-way (unlike bubble/
+    quick, merged sub-ranges keep shifting absolute position as they fold
+    into larger ones — marking them settled early would look right, then
+    visibly wrong a moment later). Everything lights up together at the
+    very end instead, which is honest to what's actually true at each step. */
+function mergeSortSteps(input: number[]): SortStep[] {
+  const a = [...input];
+  const steps: SortStep[] = [];
+  const n = a.length;
+
+  function merge(lo: number, mid: number, hi: number) {
+    const left = a.slice(lo, mid + 1);
+    const right = a.slice(mid + 1, hi + 1);
+    let i = 0;
+    let j = 0;
+    let k = lo;
+
+    while (i < left.length && j < right.length) {
+      steps.push({ array: [...a], comparing: [lo + i, mid + 1 + j] });
+      if (left[i] <= right[j]) {
+        a[k] = left[i];
+        i++;
+      } else {
+        a[k] = right[j];
+        j++;
+      }
+      steps.push({ array: [...a], comparing: [k, k] });
+      k++;
+    }
+    while (i < left.length) {
+      a[k] = left[i];
+      steps.push({ array: [...a], comparing: [k, k] });
+      i++;
+      k++;
+    }
+    while (j < right.length) {
+      a[k] = right[j];
+      steps.push({ array: [...a], comparing: [k, k] });
+      j++;
+      k++;
+    }
+  }
+
+  function run(lo: number, hi: number) {
+    if (lo >= hi) return;
+    const mid = Math.floor((lo + hi) / 2);
+    run(lo, mid);
+    run(mid + 1, hi);
+    merge(lo, mid, hi);
+  }
+
+  run(0, n - 1);
+  steps.push({ array: [...a], sortedIndices: Array.from({ length: n }, (_, i) => i) });
+  return steps;
+}
+
+type Algorithm = "bubble" | "quick" | "merge";
 
 const ALGO_LABEL: Record<Algorithm, string> = {
   bubble: "Bubble Sort",
   quick: "Quick Sort",
+  merge: "Merge Sort",
 };
 
 /* ===================== Component ===================== */
@@ -123,7 +181,13 @@ const SortVisualizer: React.FC = () => {
   };
 
   const play = () => {
-    const computed = steps ?? (algorithm === "bubble" ? bubbleSortSteps(array) : quickSortSteps(array));
+    const computed =
+      steps ??
+      (algorithm === "bubble"
+        ? bubbleSortSteps(array)
+        : algorithm === "quick"
+          ? quickSortSteps(array)
+          : mergeSortSteps(array));
     if (!steps) setSteps(computed);
     if (stepIndex >= computed.length - 1) setStepIndex(0);
     setPlaying(true);
@@ -211,9 +275,12 @@ const SortVisualizer: React.FC = () => {
             {/* Header */}
             <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border">
               <div>
-                <p className="text-sm font-medium">{ALGO_LABEL[algorithm]}</p>
-                <p className="text-xs text-muted-foreground">
-                  A hidden one — since this is the actual specialty.
+                <p className="text-base font-semibold tracking-tight">
+                  You found it. Impressive.
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {ALGO_LABEL[algorithm]} — hidden here since this is the
+                  actual specialty.
                 </p>
               </div>
               <button
@@ -254,7 +321,7 @@ const SortVisualizer: React.FC = () => {
             {/* Controls */}
             <div className="flex items-center justify-between gap-3 px-5 py-4 border-t border-border">
               <div className="flex items-center gap-1.5">
-                {(["bubble", "quick"] as Algorithm[]).map((a) => (
+                {(["bubble", "quick", "merge"] as Algorithm[]).map((a) => (
                   <button
                     key={a}
                     onClick={() => changeAlgorithm(a)}
