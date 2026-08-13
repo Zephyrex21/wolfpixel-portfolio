@@ -72,12 +72,43 @@ interface NavbarProps {
   onToggleTheme: () => void;
 }
 
+const SECTION_IDS = ["home", "projects", "tools", "skills", "about", "contact"];
+
 /* ===================== COMPONENT ===================== */
 
 const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [activeSection, setActiveSection] = useState<string>("home");
+
+  useEffect(() => {
+    const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(
+      (el): el is HTMLElement => el !== null,
+    );
+    if (sections.length === 0) return;
+
+    // Shrinks the effective viewport used for intersection down to a thin
+    // band near the top of the screen, so a section only counts as
+    // "active" once it's reached roughly where a person's eye actually is
+    // while scrolling — not just whenever any sliver of it is visible
+    // (which, for tall sections, would mean several are "visible" at
+    // once and the nav flickers between them).
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length === 0) return;
+        const topMost = visible.reduce((a, b) =>
+          a.boundingClientRect.top < b.boundingClientRect.top ? a : b,
+        );
+        setActiveSection(topMost.target.id);
+      },
+      { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let ticking = false;
@@ -216,22 +247,37 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
             </motion.a>
 
             <ul className="flex md:gap-5 xl:gap-6 text-base font-medium">
-              {links.map((item, i) => (
-                <motion.li
-                  key={item}
-                  custom={i + 1}
-                  variants={navItemVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition"
+              {links.map((item, i) => {
+                const id = item.toLowerCase();
+                const isActive = activeSection === id;
+                return (
+                  <motion.li
+                    key={item}
+                    custom={i + 1}
+                    variants={navItemVariants}
+                    initial="hidden"
+                    animate="visible"
                   >
-                    {item}
-                  </a>
-                </motion.li>
-              ))}
+                    <a
+                      href={`#${id}`}
+                      className={`relative pb-1 transition-colors ${
+                        isActive
+                          ? "text-[var(--color-foreground)]"
+                          : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+                      }`}
+                    >
+                      {item}
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-active-indicator"
+                          className="absolute left-0 right-0 -bottom-0.5 h-[2px] rounded-full bg-[var(--color-foreground)]"
+                          transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                        />
+                      )}
+                    </a>
+                  </motion.li>
+                );
+              })}
             </ul>
 
             <div className="flex items-center md:gap-3 xl:gap-4">

@@ -7,11 +7,11 @@ import { SocialLink } from "../../utils/constants";
 import { scrollToTarget } from "../../utils/smoothScroll";
 import CountUp from "../CountUp";
 import TypewriterRoles from "./TypewriterRoles";
+import SplitText from "../SplitText";
 import { useGithubStats } from "../../utils/useGithubStats";
 import {
   staggerContainerSlow,
   fadeUp,
-  fadeUpSlow,
   scaleReveal,
   hoverScale,
 } from "../../utils/animations";
@@ -53,8 +53,7 @@ const Hero: React.FC = () => {
               HELLO, I AM
             </motion.p>
 
-            <motion.h1
-              variants={fadeUpSlow}
+            <h1
               className="
                 text-[clamp(3rem,9vw,7rem)]
                 font-funnel
@@ -64,10 +63,9 @@ const Hero: React.FC = () => {
                 mb-6 md:mb-8
               "
             >
-              Saurabh Raj
-              <br />
-              Shekhar
-            </motion.h1>
+              <SplitText as="span" className="block">Saurabh Raj</SplitText>
+              <SplitText as="span" className="block">Shekhar</SplitText>
+            </h1>
 
             <motion.p
               variants={fadeUp}

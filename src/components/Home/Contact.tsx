@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { staggerContainer, fadeUp, hoverScale } from "../../utils/animations";
 import { useGithubStats } from "../../utils/useGithubStats";
 import ContactForm from "./ContactForm";
+import SplitText from "../SplitText";
 
 /* =======================
    COMPONENT
@@ -63,18 +64,14 @@ const Contact: React.FC = () => {
             whileInView="show"
             viewport={{ once: true, amount: 0.35 }}
           >
-            <motion.h2
-              variants={fadeUp}
-              className="font-funnel max-w-xl text-[clamp(3.5rem,8vw,6rem)]
-                       font-black leading-[1] tracking-tight"
-            >
-              Let's build
-              <br />
-              something
-              <span className="mt-2 block font-light text-background/70">
+            <h2 className="font-funnel max-w-xl text-[clamp(3.5rem,8vw,6rem)]
+                       font-black leading-[1] tracking-tight">
+              <SplitText as="span" className="block">Let's build</SplitText>
+              <SplitText as="span" className="block">something</SplitText>
+              <SplitText as="span" className="mt-2 block font-light text-background/70">
                 worth shipping
-              </span>
-            </motion.h2>
+              </SplitText>
+            </h2>
 
             <motion.p
               variants={fadeUp}

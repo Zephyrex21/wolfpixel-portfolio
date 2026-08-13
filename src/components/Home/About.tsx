@@ -9,6 +9,7 @@ import {
 } from "../../utils/animations";
 import { journeyItem } from "../../utils/constants";
 import { useMediaQuery } from "../../utils/useMediaQuery";
+import SplitText from "../SplitText";
 
 /* ===================== DATA ===================== */
 
@@ -92,12 +93,9 @@ const About = () => {
         className="max-w-6xl mx-auto px-4 sm:px-6"
       >
         {/* TITLE */}
-        <motion.h2
-          variants={fadeUp}
-          className="font-funnel font-extrabold text-[clamp(3.5rem,9vw,7rem)] leading-[1.02] tracking-tight max-w-4xl"
-        >
-          About Me
-        </motion.h2>
+        <h2 className="font-funnel font-extrabold text-[clamp(3.5rem,9vw,7rem)] leading-[1.02] tracking-tight max-w-4xl">
+          <SplitText as="span">About Me</SplitText>
+        </h2>
 
         {/* DESCRIPTION */}
         <motion.p

@@ -3,6 +3,7 @@ import { motion, useInView, useReducedMotion, Variants } from "framer-motion";
 import { Terminal, Github, Copy, Check } from "lucide-react";
 import { toolItem } from "../../utils/constants";
 import ToolkitIllustration from "./ToolkitIllustration";
+import SplitText from "../SplitText";
 
 /* ===================== Data ===================== */
 
@@ -215,11 +216,10 @@ const DeveloperTools: React.FC = () => {
         {/* Header */}
         <motion.div variants={fadeUp} className="mb-10 lg:mb-15 px-4 sm:px-6">
           <h2 className="text-[clamp(3.2rem,7vw,5.5rem)] font-black leading-[1.1] tracking-tight">
-            Developer
-            <br />
-            <span className="font-light text-muted-foreground">
+            <SplitText as="span" className="block">Developer</SplitText>
+            <SplitText as="span" className="block font-light text-muted-foreground">
               Tools & Open Source
-            </span>
+            </SplitText>
           </h2>
 
           <p className="mt-8 max-w-2xl text-lg sm:text-xl text-muted-foreground leading-relaxed">

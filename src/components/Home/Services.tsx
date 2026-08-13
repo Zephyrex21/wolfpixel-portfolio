@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { staggerContainer, fadeUp } from "../../utils/animations";
 import { serviceItem } from "../../utils/constants";
+import SplitText from "../SplitText";
 
 const services: serviceItem[] = [
   { icon: "Globe", title: "Full-Stack Web Apps" },
@@ -100,7 +101,7 @@ const Services: React.FC = () => {
         <motion.div variants={fadeUp}>
           <div className="mb-16">
             <h2 className="font-funnel font-extrabold text-[clamp(3.5rem,8vw,6rem)] leading-[1.05] tracking-tight text-foreground">
-              What I <span className="font-extrabold">Build</span>
+              <SplitText as="span">What I Build</SplitText>
             </h2>
             <p className="mt-6 text-base sm:text-xl leading-[1.9] text-muted-foreground max-w-3xl">
               The kind of problems I like solving — from full-stack products

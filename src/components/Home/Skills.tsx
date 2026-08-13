@@ -27,6 +27,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { EASE_PREMIUM } from "../../utils/animations";
+import SplitText from "../SplitText";
 
 export interface TechStackItem {
   name: string;
@@ -255,15 +256,12 @@ const Skills: React.FC = () => {
           viewport={{ once: true, amount: 0.25 }}
           variants={sectionVariants}
         >
-          <motion.h2
-            variants={sectionVariants}
-            className="text-[clamp(3.3rem,8vw,6rem)] font-black leading-[1] tracking-tight"
-          >
-            Skills &<br />
-            <span className="mt-2 block font-light text-muted-foreground">
+          <h2 className="text-[clamp(3.3rem,8vw,6rem)] font-black leading-[1] tracking-tight">
+            <SplitText as="span" className="block">Skills &</SplitText>
+            <SplitText as="span" className="mt-2 block font-light text-muted-foreground">
               Technologies
-            </span>
-          </motion.h2>
+            </SplitText>
+          </h2>
           <motion.p
             variants={sectionVariants}
             className="mt-10 text-lg sm:text-xl text-muted-foreground leading-relaxed"

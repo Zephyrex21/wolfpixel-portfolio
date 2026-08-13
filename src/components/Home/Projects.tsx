@@ -4,6 +4,7 @@ import { ExternalLink, ChevronDown, Github } from "lucide-react";
 import { projectItem, Theme } from "../../utils/constants";
 import { staggerContainer, fadeUp, EASE_PREMIUM } from "../../utils/animations";
 import { useMediaQuery } from "../../utils/useMediaQuery";
+import SplitText from "../SplitText";
 
 /* ===================== ANIMATIONS ===================== */
 
@@ -154,9 +155,10 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
         {/* ===== HEADER ===== */}
         <motion.div variants={fadeUp} className="mb-10 lg:mb-15">
           <h2 className="text-[clamp(3.5rem,8vw,6rem)] font-black leading-[1]">
-            Selected
-            <br />
-            <span className="font-light text-muted-foreground">Projects</span>
+            <SplitText as="span" className="block">Selected</SplitText>
+            <SplitText as="span" className="block font-light text-muted-foreground">
+              Projects
+            </SplitText>
           </h2>
 
           <p className="mt-8 max-w-2xl text-lg sm:text-xl text-muted-foreground leading-relaxed">
