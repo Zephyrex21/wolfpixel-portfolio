@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ChevronDown, Github } from "lucide-react";
 import { projectItem, Theme } from "../../utils/constants";
@@ -460,4 +460,4 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
   );
 };
 
-export default Projects;
+export default memo(Projects);

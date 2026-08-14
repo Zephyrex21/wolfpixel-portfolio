@@ -310,6 +310,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
             {/* Results */}
             <div
               role="listbox"
+              data-lenis-prevent
               className="max-h-[60vh] overflow-y-auto py-2"
             >
               {filtered.length === 0 && (
