@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2 } from "lucide-react";
 import YourImg from "/assets/photo-cutout.webp";
 import CVPDF from "/assets/resume.pdf";
@@ -9,7 +9,6 @@ import CountUp from "../CountUp";
 import TypewriterRoles from "./TypewriterRoles";
 import SplitText from "../SplitText";
 import { useGithubStats } from "../../utils/useGithubStats";
-import { useGithubActivity, formatRelativeTime } from "../../utils/useGithubActivity";
 import {
   staggerContainerSlow,
   fadeUp,
@@ -21,35 +20,6 @@ import {
 
 const Hero: React.FC = () => {
   const { repoCount } = useGithubStats();
-  const { activity } = useGithubActivity();
-  const prefersReducedMotion = useReducedMotion();
-
-  // Cinematic exit as the person scrolls from Hero into Projects: the
-  // text column fades and drifts up slightly instead of just sliding
-  // off-screen flat.
-  //
-  // Two things broke in the first version of this, both from the same
-  // root cause — the effect was applied to the *shared* wrapper that
-  // both the text column and the absolutely-positioned photo live in:
-  //  - It included a `scale` transform. Scaling a container shrinks
-  //    absolutely-positioned descendants toward the container's center
-  //    too, and the photo sits far off-center (`right-[20%]` etc.) — so
-  //    it visibly drifted sideways on every scroll tick. Dropped `scale`
-  //    entirely; opacity + a small `y` drift doesn't have this problem.
-  //  - Progress was measured relative to the *hero element's own height*
-  //    ("start start" → "end start"). On mobile the hero has no fixed
-  //    height (the photo is hidden below `sm:`, so it's just as tall as
-  //    the stacked text), which could compress the whole effect into a
-  //    very short, aggressive scroll distance — dragging the heading up
-  //    behind the fixed navbar almost immediately. Switched to plain
-  //    page scroll position over a fixed pixel range instead, so the
-  //    timing is identical regardless of the hero's rendered height.
-  const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 350], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 350], [0, -30]);
-  const heroExitStyle = prefersReducedMotion
-    ? {}
-    : { opacity: heroOpacity, y: heroY };
 
   const socials: SocialLink[] = [
     { href: "https://github.com/Zephyrex21", icon: <Github />, label: "GitHub" },
@@ -75,7 +45,6 @@ const Hero: React.FC = () => {
             variants={staggerContainerSlow}
             initial="hidden"
             animate="show"
-            style={heroExitStyle}
             className="w-full max-w-2xl z-10 relative"
           >
             <motion.p
@@ -90,7 +59,7 @@ const Hero: React.FC = () => {
                 text-[clamp(3rem,9vw,7rem)]
                 font-funnel
                 font-extrabold
-                leading-[0.95]
+                leading-[1.08]
                 tracking-tight
                 mb-6 md:mb-8
               "
@@ -115,20 +84,6 @@ const Hero: React.FC = () => {
               pipelines to algorithm visualizers — and I ship most of what I
               learn.
             </motion.p>
-
-            {activity && (
-              <motion.div
-                variants={fadeUp}
-                className="mb-6 inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-xs sm:text-sm text-muted-foreground"
-              >
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground/50" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-foreground" />
-                </span>
-                Last commit {formatRelativeTime(activity.timestamp)} on{" "}
-                <span className="text-foreground font-medium">{activity.repo}</span>
-              </motion.div>
-            )}
 
             <motion.div
               variants={fadeUp}

@@ -54,7 +54,7 @@ const SplitText: React.FC<SplitTextProps> = ({
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className="inline-block overflow-hidden pb-[0.08em] align-bottom"
+          className="inline-block overflow-hidden pt-[0.15em] pb-[0.08em] -mt-[0.15em] align-bottom"
         >
           <motion.span variants={wordVariants} className="inline-block">
             {word}
