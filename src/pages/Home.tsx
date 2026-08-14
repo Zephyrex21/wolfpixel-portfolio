@@ -133,12 +133,12 @@ const flagshipProjects: projectItem[] = [
 
 const moreProjects: miniProjectItem[] = [
   {
-    title: "NeighborNet",
+    title: "Context Engineering Toolkit",
     description:
-      "Location-based community platform for discovering and sharing local resources in real time.",
-    stack: "TypeScript · Firebase · Leaflet",
-    link: "https://neighbornet-ten.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/neighbornet",
+      "Full RAG context/token-optimization pipeline — semantic chunking, MMR re-ranking, and LLM summarization, production-hardened with Redis rate limiting, Zod validation, and 90+ tests.",
+    stack: "React · Node.js · MongoDB Atlas · Redis",
+    link: "https://github.com/Zephyrex21/context-engineering-toolkit",
+    codeLink: "https://github.com/Zephyrex21/context-engineering-toolkit",
   },
   {
     title: "Concourse AI",
