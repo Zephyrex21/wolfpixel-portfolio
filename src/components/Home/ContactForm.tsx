@@ -15,7 +15,7 @@ const ContactForm: React.FC = () => {
   const canSubmit =
     name.trim().length > 1 &&
     isValidEmail &&
-    message.trim().length > 8 &&
+    message.trim().length >= 8 &&
     status !== "sending";
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,6 +51,8 @@ const ContactForm: React.FC = () => {
   if (status === "success") {
     return (
       <motion.div
+        role="status"
+        aria-live="polite"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col items-center justify-center text-center gap-3 py-10 text-background"
@@ -123,7 +125,11 @@ const ContactForm: React.FC = () => {
       </div>
 
       {(status === "error" || status === "not-configured") && (
-        <div className="flex items-start gap-2 text-xs text-background/70">
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="flex items-start gap-2 text-xs text-background/70"
+        >
           <AlertCircle size={14} className="shrink-0 mt-0.5" />
           <span>
             {status === "not-configured"
@@ -136,6 +142,7 @@ const ContactForm: React.FC = () => {
       <button
         type="submit"
         disabled={!canSubmit}
+        aria-busy={status === "sending"}
         className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-background text-foreground px-6 py-3 text-sm font-medium transition-all hover:scale-[1.02] disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed cursor-pointer"
       >
         {status === "sending" ? "Sending..." : "Send message"}

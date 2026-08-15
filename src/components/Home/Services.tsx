@@ -116,7 +116,11 @@ const Services: React.FC = () => {
           className="space-y-16 relative overflow-hidden w-full"
         >
           {/* Top Row - scroll left */}
-          <div ref={topRowRef} className="flex gap-4 sm:gap-6 md:gap-8 w-max">
+          <div
+            ref={topRowRef}
+            className="flex gap-4 sm:gap-6 md:gap-8 w-max"
+            style={{ willChange: "transform" }}
+          >
             {topRow.map((service, index) => {
               const Icon = iconMap[service.icon] || Code;
               return (
@@ -139,6 +143,7 @@ const Services: React.FC = () => {
           <div
             ref={bottomRowRef}
             className="flex gap-4 sm:gap-6 md:gap-8 w-max"
+            style={{ willChange: "transform" }}
           >
             {bottomRow.map((service, index) => {
               const Icon = iconMap[service.icon] || Code;

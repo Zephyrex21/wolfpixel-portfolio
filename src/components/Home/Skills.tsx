@@ -222,7 +222,7 @@ const TechTicker: React.FC = () => {
       ref={containerRef}
       className="relative overflow-hidden w-full [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
     >
-      <div ref={rowRef} className="flex gap-3 w-max">
+      <div ref={rowRef} className="flex gap-3 w-max" style={{ willChange: "transform" }}>
         {row.map((tech, i) => (
           <div
             key={`${tech.name}-${i}`}

@@ -6,6 +6,21 @@
     <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- LCP: the Hero photo is the largest above-the-fold element on
+         desktop/tablet. Without this, the browser doesn't discover it
+         needs fetching until React mounts and renders the <img> tag —
+         this starts the fetch in parallel with the JS bundle instead.
+         Matches the same sm: breakpoint the image is hidden below via
+         `hidden sm:block`, so mobile visitors don't fetch an image they
+         never see. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/photo-cutout.webp"
+      media="(min-width: 640px)"
+      fetchpriority="high"
+    />
+
     <!-- Fonts: preconnect + non-blocking load (was a render-blocking @import in CSS) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
