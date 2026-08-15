@@ -141,12 +141,12 @@ const moreProjects: miniProjectItem[] = [
     codeLink: "https://github.com/Zephyrex21/context-engineering-toolkit",
   },
   {
-    title: "Concourse AI",
+    title: "DevKit",
     description:
-      "Multilingual GenAI assistant for FIFA World Cup 2026 stadium operations — built for PromptWars Challenge 4.",
-    stack: "GenAI · Multilingual",
-    link: "https://concourse-ai-one.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/concourse-ai",
+      "30 client-side JWT, JSON, and cryptography utilities in one workspace — nothing typed ever leaves the browser.",
+    stack: "React 19 · TypeScript · Vite",
+    link: "https://dev-tools-suite-xi.vercel.app",
+    codeLink: "https://github.com/Zephyrex21/dev-tools-suite",
   },
   {
     title: "API Guardian",
@@ -173,12 +173,12 @@ const moreProjects: miniProjectItem[] = [
     codeLink: "https://github.com/Zephyrex21/automata-visualizer",
   },
   {
-    title: "Red-Blackify",
+    title: "AllowOrigin",
     description:
-      "Red-black tree visualizer showing rotations and recoloring during insertion, live.",
-    stack: "JavaScript",
-    link: "https://rbt-visualizer.netlify.app",
-    codeLink: "https://github.com/Zephyrex21/rbt-visualizer",
+      "Paste a CORS error, pick your framework, get the exact fix — with a request-flow visualizer and header audit.",
+    stack: "React · Vite · Framer Motion",
+    link: "https://alloworigin.dev",
+    codeLink: "https://github.com/Zephyrex21/cors-toolkit",
   },
   {
     title: "CFG Studio",
@@ -188,12 +188,12 @@ const moreProjects: miniProjectItem[] = [
     codeLink: "https://github.com/Zephyrex21/cfg-studio",
   },
   {
-    title: "Task Scheduler Visualizer",
+    title: "Roséa",
     description:
-      "CPU scheduling visualizer for FCFS, SJF, Round Robin, and Priority algorithms.",
-    stack: "HTML · CSS · JS",
-    link: "https://process-visualizer.netlify.app",
-    codeLink: "https://github.com/Zephyrex21/task-scheduler-visualizer",
+      "Interactive luxury product film — a 240-frame scroll-scrubbed canvas hero driven by GSAP ScrollTrigger.",
+    stack: "React · TypeScript · GSAP · MongoDB",
+    link: "https://rosea-product-landing.vercel.app",
+    codeLink: "https://github.com/Zephyrex21/rosea-product-landing",
   },
   {
     title: "CSP Playground",
