@@ -133,22 +133,6 @@ const flagshipProjects: projectItem[] = [
 
 const moreProjects: miniProjectItem[] = [
   {
-    title: "Context Engineering Toolkit",
-    description:
-      "Full RAG context/token-optimization pipeline — semantic chunking, MMR re-ranking, and LLM summarization, production-hardened with Redis rate limiting, Zod validation, and 90+ tests.",
-    stack: "React · Node.js · MongoDB Atlas · Redis",
-    link: "https://github.com/Zephyrex21/context-engineering-toolkit",
-    codeLink: "https://github.com/Zephyrex21/context-engineering-toolkit",
-  },
-  {
-    title: "DevKit",
-    description:
-      "30 client-side JWT, JSON, and cryptography utilities in one workspace — nothing typed ever leaves the browser.",
-    stack: "React 19 · TypeScript · Vite",
-    link: "https://dev-tools-suite-xi.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/dev-tools-suite",
-  },
-  {
     title: "API Guardian",
     description:
       "GitHub App that catches breaking OpenAPI changes in pull requests via semantic contract analysis.",
@@ -171,14 +155,6 @@ const moreProjects: miniProjectItem[] = [
     stack: "HTML · JS Canvas",
     link: "https://automata-lab.netlify.app",
     codeLink: "https://github.com/Zephyrex21/automata-visualizer",
-  },
-  {
-    title: "AllowOrigin",
-    description:
-      "Paste a CORS error, pick your framework, get the exact fix — with a request-flow visualizer and header audit.",
-    stack: "React · Vite · Framer Motion",
-    link: "https://alloworigin.dev",
-    codeLink: "https://github.com/Zephyrex21/cors-toolkit",
   },
   {
     title: "CFG Studio",
