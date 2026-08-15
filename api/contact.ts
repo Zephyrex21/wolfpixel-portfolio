@@ -28,6 +28,80 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
  * and the form shows the same "not wired up yet" message it always
  * has — nothing breaks if it's left unconfigured.
  */
+
+/**
+ * Name/email/message are all attacker-controlled (anyone can POST to
+ * this endpoint directly, not just the form) and get interpolated
+ * straight into an HTML string below — without escaping, a message
+ * containing `<img src=x onerror=...>` or similar would execute inside
+ * the email client that opens it. This is the actual security boundary,
+ * not just a formatting nicety.
+ */
+function escapeHtml(input: string): string {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Inline-styled on purpose — email clients (Gmail included) strip or
+ * unreliably support <style> blocks, so every rule has to travel with
+ * its element to render consistently. Kept deliberately close to the
+ * portfolio's own look: plain black/white, thin borders, no color.
+ */
+function buildEmailHtml(name: string, email: string, message: string): string {
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeMessage = escapeHtml(message).replace(/\n/g, "<br />");
+
+  return `
+<div style="background:#f6f5f2;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e3e1dc;border-radius:16px;overflow:hidden;">
+    <div style="padding:28px 32px;border-bottom:1px solid #e3e1dc;">
+      <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8a8780;">
+        Portfolio Contact Form
+      </p>
+      <h1 style="margin:8px 0 0;font-size:22px;font-weight:800;color:#141414;">
+        New message from ${safeName}
+      </h1>
+    </div>
+
+    <div style="padding:24px 32px 8px;">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+        <tr>
+          <td style="padding:4px 0;font-size:12px;color:#8a8780;width:70px;">From</td>
+          <td style="padding:4px 0;font-size:14px;color:#141414;font-weight:600;">${safeName}</td>
+        </tr>
+        <tr>
+          <td style="padding:4px 0;font-size:12px;color:#8a8780;">Email</td>
+          <td style="padding:4px 0;font-size:14px;">
+            <a href="mailto:${safeEmail}" style="color:#141414;text-decoration:underline;">${safeEmail}</a>
+          </td>
+        </tr>
+      </table>
+
+      <div style="background:#f6f5f2;border:1px solid #e3e1dc;border-radius:12px;padding:18px 20px;margin-bottom:24px;">
+        <p style="margin:0;font-size:14px;line-height:1.7;color:#141414;white-space:pre-wrap;">${safeMessage}</p>
+      </div>
+
+      <a href="mailto:${safeEmail}" style="display:inline-block;background:#141414;color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;padding:11px 22px;border-radius:999px;">
+        Reply to ${safeName}
+      </a>
+    </div>
+
+    <div style="padding:16px 32px;border-top:1px solid #e3e1dc;">
+      <p style="margin:0;font-size:11px;color:#a5a29b;">
+        Sent from the contact form on your portfolio — reply-to is already set to ${safeEmail}, so you can also just hit reply.
+      </p>
+    </div>
+  </div>
+</div>
+`.trim();
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -76,8 +150,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         from: `Portfolio Contact <${FROM_EMAIL}>`,
         to: [TO_EMAIL],
         reply_to: email,
-        subject: `New message from ${name} via portfolio`,
+        subject: `New portfolio message from ${name}`,
         text: `From: ${name} <${email}>\n\n${message}`,
+        html: buildEmailHtml(name, email, message),
       }),
     });
 
