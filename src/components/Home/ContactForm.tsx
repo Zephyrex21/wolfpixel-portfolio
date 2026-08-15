@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { EMAILJS_CONFIG, isEmailjsConfigured } from "../../utils/emailConfig";
 import { fadeUp } from "../../utils/animations";
 
 type Status = "idle" | "sending" | "success" | "error" | "not-configured";
@@ -24,19 +22,23 @@ const ContactForm: React.FC = () => {
     e.preventDefault();
     if (!canSubmit) return;
 
-    if (!isEmailjsConfigured()) {
-      setStatus("not-configured");
-      return;
-    }
-
     setStatus("sending");
     try {
-      await emailjs.send(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateId,
-        { from_name: name, from_email: email, message },
-        { publicKey: EMAILJS_CONFIG.publicKey },
-      );
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (res.status === 503) {
+        setStatus("not-configured");
+        return;
+      }
+      if (!res.ok) {
+        setStatus("error");
+        return;
+      }
+
       setStatus("success");
       setName("");
       setEmail("");
