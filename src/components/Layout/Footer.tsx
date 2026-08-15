@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, Code2, MapPin } from "lucide-react";
 import { staggerContainer, fadeUp } from "../../utils/animations";
+import SplitText from "../SplitText";
 
 /* ===================== COMPONENT ===================== */
 
@@ -23,8 +24,7 @@ const Footer: React.FC = () => {
         "
       >
         {/* STATEMENT */}
-        <motion.h2
-          variants={fadeUp}
+        <h2
           className="
             font-funnel font-extrabold
             text-[clamp(3.5rem,8vw,6rem)]
@@ -33,9 +33,9 @@ const Footer: React.FC = () => {
             max-w-4xl
           "
         >
-          Still learning. <br className="hidden sm:block" />
-          Always shipping.
-        </motion.h2>
+          <SplitText as="span" className="block">Still learning.</SplitText>
+          <SplitText as="span" className="block">Always shipping.</SplitText>
+        </h2>
 
         <motion.p
           variants={fadeUp}
