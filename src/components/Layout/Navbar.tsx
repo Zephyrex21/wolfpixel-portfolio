@@ -83,18 +83,13 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
   const [activeSection, setActiveSection] = useState<string>("home");
 
   useEffect(() => {
-    const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(
-      (el): el is HTMLElement => el !== null,
-    );
-    if (sections.length === 0) return;
-
     // Shrinks the effective viewport used for intersection down to a thin
     // band near the top of the screen, so a section only counts as
     // "active" once it's reached roughly where a person's eye actually is
     // while scrolling — not just whenever any sliver of it is visible
     // (which, for tall sections, would mean several are "visible" at
     // once and the nav flickers between them).
-    const observer = new IntersectionObserver(
+    const intersectionObserver = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (visible.length === 0) return;
@@ -106,8 +101,40 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
       { rootMargin: "-20% 0px -70% 0px", threshold: 0 },
     );
 
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    // Most of these sections (Skills, Tools, About, Contact) are
+    // React.lazy() + Suspense — their DOM nodes don't exist yet at the
+    // instant this effect first runs, only Hero and Projects (eager) do.
+    // A single getElementById pass here would silently miss every lazy
+    // section forever, leaving the nav indicator stuck on whichever one
+    // happened to already be mounted. This tracks what's been found so
+    // far and keeps checking as the DOM changes, picking up each section
+    // the moment its chunk actually loads and renders — then stops
+    // watching once all of them have been found.
+    const observedIds = new Set<string>();
+
+    const observeNewlyMountedSections = () => {
+      for (const id of SECTION_IDS) {
+        if (observedIds.has(id)) continue;
+        const el = document.getElementById(id);
+        if (el) {
+          observedIds.add(id);
+          intersectionObserver.observe(el);
+        }
+      }
+      if (observedIds.size === SECTION_IDS.length) {
+        mutationObserver.disconnect();
+      }
+    };
+
+    const mutationObserver = new MutationObserver(observeNewlyMountedSections);
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    observeNewlyMountedSections(); // catch whatever's already mounted immediately
+
+    return () => {
+      intersectionObserver.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   useEffect(() => {
