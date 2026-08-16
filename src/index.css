@@ -54,10 +54,13 @@
    hover transitions already defined throughout the site the rest of
    the time. */
 .theme-transitioning,
-.theme-transitioning *:not(svg):not(svg *) {
+.theme-transitioning * {
   transition:
     background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    fill 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    stroke 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 body {
