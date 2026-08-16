@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Theme } from "../../utils/constants";
@@ -6,15 +6,16 @@ import { Theme } from "../../utils/constants";
 interface LayoutProps {
   theme: Theme;
   onToggleTheme: () => void;
+  children: ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ theme, onToggleTheme }) => {
+const Layout: React.FC<LayoutProps> = ({ theme, onToggleTheme, children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar theme={theme} onToggleTheme={onToggleTheme} />
 
       <main className="pt-[96px] sm:pt-[110px] md:pt-[100px] lg:pt-[76px]">
-        <Outlet />
+        {children}
       </main>
 
       <Footer />

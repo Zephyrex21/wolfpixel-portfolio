@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useState, useCallback, useRef, lazy, Suspense } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import PageLoader from "./components/Loaders/PageLoader";
 import { AnimatePresence } from "framer-motion";
@@ -144,7 +143,7 @@ function App() {
     );
 
   return (
-    <Router>
+    <>
       <ScrollProgress />
       <CommandPalette theme={theme} onToggleTheme={toggleTheme} />
       <Suspense fallback={null}>
@@ -152,7 +151,7 @@ function App() {
       </Suspense>
       <AppRoutes theme={theme} onToggleTheme={toggleTheme} />
       <BackToTop />
-    </Router>
+    </>
   );
 }
 

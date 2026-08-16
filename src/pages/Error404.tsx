@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { staggerContainer, fadeUp } from "../utils/animations";
 
 const Error404: React.FC = () => {
-  const navigate = useNavigate();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -54,13 +51,15 @@ const Error404: React.FC = () => {
           className="mt-4 flex flex-col sm:flex-row gap-4"
         >
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => window.history.back()}
             className="px-10 py-4 border border-border rounded-full hover:bg-foreground/5 transition hover:cursor-pointer hover:scale-95"
           >
             ← Return to previous page
           </button>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => {
+              window.location.href = "/";
+            }}
             className="px-10 py-4 bg-foreground text-background rounded-full hover:opacity-90 transition hover:cursor-pointer hover:scale-95 btn-glow"
           >
             Go home
