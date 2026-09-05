@@ -328,26 +328,49 @@ const Projects: React.FC<{ projects: projectItem[]; theme: Theme }> = ({
                     ))}
                   </motion.div>
 
-                  {/* View Project */}
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className={`
-        rounded-full px-4 py-[7px]
-        text-[11px] font-medium tracking-wide
+                  {/* Live link + repo — both visible on the card itself,
+                      no need to expand to find them */}
+                  <div className="flex items-center gap-2 max-w-max sm:ml-auto">
+                    <a
+                      href={project.codeLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`${project.title} source code on GitHub`}
+                      className={`
+        rounded-full p-[9px]
         border transition-colors
-        flex items-center gap-2 max-w-max sm:ml-auto
+        flex items-center justify-center
         ${
           isHovered
             ? "border-background text-background"
             : "border-border text-muted-foreground"
         }
       `}
-                  >
-                    View Project <ExternalLink size={14} />
-                  </a>
+                    >
+                      <Github size={14} />
+                    </a>
+
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className={`
+        rounded-full px-4 py-[7px]
+        text-[11px] font-medium tracking-wide
+        border transition-colors
+        flex items-center gap-2
+        ${
+          isHovered
+            ? "border-background text-background"
+            : "border-border text-muted-foreground"
+        }
+      `}
+                    >
+                      View Project <ExternalLink size={14} />
+                    </a>
+                  </div>
 
                   {/* Chevron for larger screens */}
                   <motion.span

@@ -117,18 +117,24 @@ const Hero: React.FC = () => {
                 </p>
               </div>
 
-              <div>
-                <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none">
-                  {/* 85 LeetCode + 132 Code360 + 18 GeeksforGeeks = 235.
-                      No official public API for any of these three, so
-                      this is a hand-maintained total — update it here
-                      when the count changes meaningfully. */}
-                  <CountUp target={235} suffix="+" duration={3.2} />
+              <a
+                href="https://codolio.com/profile/Zephyrex21"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View DSA problem-solving stats on Codolio"
+                className="group cursor-pointer"
+              >
+                <p className="text-3xl sm:text-5xl font-funnel font-bold leading-none transition-opacity group-hover:opacity-70">
+                  {/* 305 questions solved per Codolio (codolio.com/profile/Zephyrex21),
+                      which aggregates LeetCode + Code360 + GeeksforGeeks —
+                      rounded down to a clean 300+ here. This stat links out
+                      to that profile. Update when the count changes meaningfully. */}
+                  <CountUp target={300} suffix="+" duration={3.2} />
                 </p>
-                <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase">
+                <p className="mt-1 text-xs tracking-widest text-muted-foreground uppercase transition-colors group-hover:text-foreground">
                   DSA Problems
                 </p>
-              </div>
+              </a>
             </motion.div>
 
             <motion.div

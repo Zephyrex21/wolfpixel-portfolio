@@ -51,15 +51,15 @@ const flagshipProjects: projectItem[] = [
     projectType: "personal",
   },
   {
-    title: "Vision Interpretability Studio",
+    title: "Cryptex File Sharing",
     description:
-      "In-browser tool for seeing inside a vision model — live Grad-CAM, feature visualization, and a ResNet-18 trained from scratch, running entirely client-side via ONNX Runtime Web.",
-    tech: ["TypeScript", "ONNX Runtime Web", "ResNet-18", "Grad-CAM"],
-    link: "https://vision-interpretability-studio.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/vision-interpretability-studio",
-    image: { dark: "/screenshots/vision-interpretability-dark.webp", light: "/screenshots/vision-interpretability-light.webp" },
-    gradientFrom: "#2d2d2d",
-    gradientTo: "#131313",
+      "A secure, token-based file sharing platform built with the MERN stack and Supabase Storage, supporting folders and shareable links.",
+    tech: ["MongoDB", "Express", "Node.js", "Supabase"],
+    link: "https://cryptex-file-sharing.onrender.com",
+    codeLink: "https://github.com/Zephyrex21/cryptex-file-sharing",
+    image: { dark: "/screenshots/cryptex-dark.webp", light: "/screenshots/cryptex-light.webp" },
+    gradientFrom: "#242424",
+    gradientTo: "#0c0c0c",
     status: "completed",
     projectType: "personal",
   },
@@ -77,32 +77,6 @@ const flagshipProjects: projectItem[] = [
     projectType: "personal",
   },
   {
-    title: "GitHub Contribution Radar",
-    description:
-      "AI-powered GitHub contribution discovery and open-source tracking platform — GitHub OAuth, TanStack Query, a Gemini-based issue summarizer, CSV export, and a command palette.",
-    tech: ["React", "TanStack Query", "GitHub OAuth", "Gemini"],
-    link: "https://github-contribution-radar.vercel.app",
-    codeLink: "https://github.com/Zephyrex21/github-contribution-radar",
-    image: { dark: "/screenshots/upstream-dark.webp", light: "/screenshots/upstream-light.webp" },
-    gradientFrom: "#292929",
-    gradientTo: "#0f0f0f",
-    status: "completed",
-    projectType: "personal",
-  },
-  {
-    title: "Cryptex File Sharing",
-    description:
-      "A secure, token-based file sharing platform built with the MERN stack and Supabase Storage, supporting folders and shareable links.",
-    tech: ["MongoDB", "Express", "Node.js", "Supabase"],
-    link: "https://cryptex-file-sharing.onrender.com",
-    codeLink: "https://github.com/Zephyrex21/cryptex-file-sharing",
-    image: { dark: "/screenshots/cryptex-dark.webp", light: "/screenshots/cryptex-light.webp" },
-    gradientFrom: "#242424",
-    gradientTo: "#0c0c0c",
-    status: "completed",
-    projectType: "personal",
-  },
-  {
     title: "Mind Forge",
     description:
       "An AI-powered mental wellness platform that helps users build healthier habits through intelligent conversations, guided journaling, mood tracking, and personalized daily check-ins.",
@@ -116,15 +90,15 @@ const flagshipProjects: projectItem[] = [
     projectType: "personal",
   },
   {
-    title: "Kaira AI Agent",
+    title: "ChatSite AI",
     description:
-      "A multimodal AI agent built with React and Python — local wake-word detection, system registry management, autonomous coding tools, and persistent memory across sessions.",
-    tech: ["React", "Python", "TypeScript", "LLM Agents"],
-    link: "https://github.com/Zephyrex21/kaira-ai-agent",
-    codeLink: "https://github.com/Zephyrex21/kaira-ai-agent",
-    gradientFrom: "#2a2a2a",
-    gradientTo: "#0f0f0f",
-    status: "in-progress",
+      "Paste any URL and chat with it — every answer is checked against the page's actual content instead of filled in from a guess. Built portfolio-grade with full CI/CD, testing, and SSRF-hardened scraping so it can't be pointed at internal infrastructure.",
+    tech: ["Next.js", "Prisma", "PostgreSQL", "Gemini"],
+    link: "https://chatsite-ai-indol.vercel.app",
+    codeLink: "https://github.com/Zephyrex21/chatsite-ai",
+    gradientFrom: "#2d2d2d",
+    gradientTo: "#131313",
+    status: "completed",
     projectType: "personal",
   },
 ];
@@ -133,20 +107,12 @@ const flagshipProjects: projectItem[] = [
 
 const moreProjects: miniProjectItem[] = [
   {
-    title: "API Guardian",
+    title: "GitHub Contribution Radar",
     description:
-      "GitHub App that catches breaking OpenAPI changes in pull requests via semantic contract analysis.",
-    stack: "Node.js · GitHub App",
-    link: "https://github.com/Zephyrex21/api-guardian-sandbox",
-    codeLink: "https://github.com/Zephyrex21/api-guardian-sandbox",
-  },
-  {
-    title: "ChatSite AI",
-    description:
-      "Paste a URL, get a grounded AI conversation about its actual content — SSRF-hardened scraping.",
-    stack: "Next.js 16 · Prisma 7 · Gemini",
-    link: "https://github.com/Zephyrex21/chatsite-ai",
-    codeLink: "https://github.com/Zephyrex21/chatsite-ai",
+      "AI-powered GitHub contribution discovery platform — GitHub OAuth, a Gemini-based issue summarizer, and CSV export, wrapped in a command palette.",
+    stack: "React · TanStack Query · Gemini",
+    link: "https://github-contribution-radar.vercel.app",
+    codeLink: "https://github.com/Zephyrex21/github-contribution-radar",
   },
   {
     title: "Automata Lab",
