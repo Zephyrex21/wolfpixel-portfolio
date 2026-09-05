@@ -188,9 +188,9 @@ const Navbar: React.FC<NavbarProps> = ({ theme, onToggleTheme }) => {
       label: "LinkedIn",
     },
     {
-      href: "https://leetcode.com/u/Zephyrex_21/",
+      href: "https://codolio.com/profile/Zephyrex21",
       icon: <Code2 />,
-      label: "LeetCode",
+      label: "Codolio",
     },
     {
       href: "mailto:shekharsaurabhraj@gmail.com",

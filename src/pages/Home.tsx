@@ -145,6 +145,14 @@ const moreProjects: miniProjectItem[] = [
     link: "https://github.com/Zephyrex21/csp-playground",
     codeLink: "https://github.com/Zephyrex21/csp-playground",
   },
+  {
+    title: "Smart City Fuzzy Platform",
+    description:
+      "Compares Mamdani, Sugeno, and Tsukamoto fuzzy inference models side-by-side across six Smart City applications — traffic, parking, lighting, waste, water, and environmental monitoring — on identical inputs, with no fabricated accuracy claims.",
+    stack: "FastAPI · React · Recharts",
+    link: "https://smart-city-fuzzy-platform.vercel.app",
+    codeLink: "https://github.com/Zephyrex21/smart-city-fuzzy-platform",
+  },
 ];
 
 const Home: React.FC<{ theme: Theme }> = ({ theme }) => {

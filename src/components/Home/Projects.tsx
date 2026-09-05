@@ -59,11 +59,13 @@ const ProjectPreview: React.FC<{
   }
 
   // Generated fallback — keeps every row feeling intentional even
-  // without a captured screenshot.
+  // without a captured screenshot. Carries the description + top tech
+  // tags directly on the preview itself, since a bare title on a
+  // gradient reads as an empty placeholder otherwise.
   return (
     <motion.div
       {...wipeProps}
-      className="relative aspect-video overflow-hidden rounded-xl border border-border flex items-center justify-center"
+      className="relative aspect-video overflow-hidden rounded-xl border border-border flex flex-col items-center justify-center gap-3 px-6 py-6 text-center"
       style={{
         backgroundImage: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientTo})`,
       }}
@@ -79,6 +81,26 @@ const ProjectPreview: React.FC<{
       <span className="relative font-funnel text-2xl sm:text-3xl font-bold text-white/90 tracking-tight px-4 text-center">
         {project.title}
       </span>
+      {/* Description + tech only in the expanded card — the floating
+          cursor-follow preview is a ~224px tooltip and has no room for
+          this, so it stays a clean title-only teaser there. */}
+      {revealOnMount && (
+        <>
+          <p className="relative max-w-sm text-xs sm:text-sm text-white/60 leading-relaxed line-clamp-3">
+            {project.description}
+          </p>
+          <div className="relative flex flex-wrap justify-center gap-1.5">
+            {project.tech.slice(0, 3).map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-white/25 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white/70"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
     </motion.div>
   );
 };
