@@ -109,7 +109,7 @@ const moreProjects: miniProjectItem[] = [
   {
     title: "GitHub Contribution Radar",
     description:
-      "AI-powered GitHub contribution discovery platform — GitHub OAuth, a Gemini-based issue summarizer, and CSV export, wrapped in a command palette.",
+      "AI-powered GitHub contribution discovery platform with OAuth login, a Gemini issue summarizer, and CSV export.",
     stack: "React · TanStack Query · Gemini",
     link: "https://github-contribution-radar.vercel.app",
     codeLink: "https://github.com/Zephyrex21/github-contribution-radar",
@@ -117,14 +117,15 @@ const moreProjects: miniProjectItem[] = [
   {
     title: "Automata Lab",
     description:
-      "Interactive NFA/DFA simulator and model-conversion visualizer for TAFL concepts.",
+      "Interactive NFA/DFA simulator with live model-conversion visualizations, built to make TAFL concepts click instantly.",
     stack: "HTML · JS Canvas",
     link: "https://automata-lab.netlify.app",
     codeLink: "https://github.com/Zephyrex21/automata-visualizer",
   },
   {
     title: "CFG Studio",
-    description: "Context-free grammar visualizer with Earley parsing.",
+    description:
+      "Context-free grammar visualizer with Earley parsing and a live parse-tree view for every derivation step.",
     stack: "HTML · JavaScript",
     link: "https://cfg-studio.netlify.app",
     codeLink: "https://github.com/Zephyrex21/cfg-studio",
@@ -132,7 +133,7 @@ const moreProjects: miniProjectItem[] = [
   {
     title: "Roséa",
     description:
-      "Interactive luxury product film — a 240-frame scroll-scrubbed canvas hero driven by GSAP ScrollTrigger.",
+      "Interactive luxury product film — a 240-frame scroll-scrubbed canvas hero driven entirely by GSAP ScrollTrigger.",
     stack: "React · TypeScript · GSAP · MongoDB",
     link: "https://rosea-product-landing.vercel.app",
     codeLink: "https://github.com/Zephyrex21/rosea-product-landing",
@@ -140,7 +141,7 @@ const moreProjects: miniProjectItem[] = [
   {
     title: "CSP Playground",
     description:
-      "Backtracking search visualizer for Sudoku, N-Queens, and graph coloring.",
+      "Backtracking search visualizer for Sudoku, N-Queens, and graph coloring, animating every step of the search.",
     stack: "HTML · JavaScript",
     link: "https://github.com/Zephyrex21/csp-playground",
     codeLink: "https://github.com/Zephyrex21/csp-playground",
@@ -148,7 +149,7 @@ const moreProjects: miniProjectItem[] = [
   {
     title: "Smart City Fuzzy Platform",
     description:
-      "Compares Mamdani, Sugeno, and Tsukamoto fuzzy inference models side-by-side across six Smart City applications — traffic, parking, lighting, waste, water, and environmental monitoring — on identical inputs, with no fabricated accuracy claims.",
+      "Compares Mamdani, Sugeno, and Tsukamoto fuzzy inference models side-by-side across six Smart City applications.",
     stack: "FastAPI · React · Recharts",
     link: "https://smart-city-fuzzy-platform.vercel.app",
     codeLink: "https://github.com/Zephyrex21/smart-city-fuzzy-platform",

@@ -64,7 +64,7 @@ const MoreProjectCard: React.FC<MoreProjectCardProps> = ({
   };
 
   return (
-    <motion.div variants={cardReveal}>
+    <motion.div variants={cardReveal} className="h-full">
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -75,7 +75,7 @@ const MoreProjectCard: React.FC<MoreProjectCardProps> = ({
           transition:
             "opacity 0.35s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease",
         }}
-        className="tool-row-tilt group relative rounded-2xl border border-border p-6 overflow-hidden hover:border-foreground/50"
+        className="tool-row-tilt group relative h-full flex flex-col rounded-2xl border border-border p-6 overflow-hidden hover:border-foreground/50"
       >
         <div
           className="card-spotlight pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
@@ -111,11 +111,17 @@ const MoreProjectCard: React.FC<MoreProjectCardProps> = ({
           </div>
         </div>
 
-        <p className="relative mt-2 text-sm text-muted-foreground leading-relaxed">
+        {/* line-clamp-2 + all descriptions hand-trimmed to ~15-16 words
+            (see Home.tsx) — belt-and-suspenders so a stray long word or
+            a slightly different font render never breaks row parity. */}
+        <p className="relative mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">
           {project.description}
         </p>
 
-        <p className="relative mt-4 font-mono text-[11px] tracking-wide text-muted-foreground/70">
+        {/* mt-auto pins this to the card's bottom regardless of how many
+            lines the description above actually wraps to, so every card
+            in a row bottoms out at the same place. */}
+        <p className="relative mt-auto pt-4 font-mono text-[11px] tracking-wide text-muted-foreground/70">
           {project.stack}
         </p>
       </div>

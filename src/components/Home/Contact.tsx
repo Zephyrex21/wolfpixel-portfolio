@@ -40,11 +40,11 @@ const Contact: React.FC = () => {
       isPrimary: false,
     },
     {
-      platform: "LeetCode",
-      handle: "85+ problems solved",
+      platform: "Codolio",
+      handle: "300+ problems solved",
       action: "View profile",
       icon: <Code2 strokeWidth={1.5} className="w-6 h-6" />,
-      href: "https://leetcode.com/u/Zephyrex_21/",
+      href: "https://codolio.com/profile/Zephyrex21",
       isPrimary: false,
     },
   ];
